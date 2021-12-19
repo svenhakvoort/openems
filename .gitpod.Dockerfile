@@ -1,13 +1,13 @@
 FROM gitpod/workspace-postgres
 
 RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh \
-             && sdk install java 11.0.13-tem"
+             && sdk install java 17.0.1-tem"
 
 # disable angular analytics
 ENV NG_CLI_ANALYTICS=false
 
 # Docker build does not rebuild an image when a base image is changed, increase this counter to trigger it.
-ENV TRIGGER_REBUILD 4
+ENV TRIGGER_REBUILD 5
 
 RUN npm install -g @angular/cli 
 
