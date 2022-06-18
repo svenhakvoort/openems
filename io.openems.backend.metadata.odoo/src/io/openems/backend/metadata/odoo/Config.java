@@ -14,7 +14,7 @@ public @interface Config {
 	Protocol odooProtocol() default Protocol.HTTP;
 
 	@AttributeDefinition(name = "Odoo Host", description = "The odoo host")
-	String odooHost() default "localhost";
+	String odooHost() default "odoo";
 
 	@AttributeDefinition(name = "Odoo Port", description = "The odoo port")
 	int odooPort() default 8069;
@@ -26,16 +26,16 @@ public @interface Config {
 	String odooPassword();
 
 	@AttributeDefinition(name = "Postgres Host", description = "The Postgres host")
-	String pgHost() default "localhost";
+	String pgHost() default "postgres";
 
 	@AttributeDefinition(name = "Postgres Port", description = "The Postgres port")
 	int pgPort() default 5432;
 
 	@AttributeDefinition(name = "Postgres Username", description = "The Postgres username")
-	String pgUser() default "odoo";
+	String pgUser() default "openems";
 
 	@AttributeDefinition(name = "Postgres Password", description = "The Postgres password")
-	String pgPassword();
+	String pgPassword() default "openems";
 
 	@AttributeDefinition(name = "Database", description = "The database name")
 	String database();
