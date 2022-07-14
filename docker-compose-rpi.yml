@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:10.0
+    environment:
+      POSTGRES_USER: openems
+      POSTGRES_PASSWORD: openems
+      POSTGRES_DB: openems
+    ports:
+      - 5432:5432
+  edge:
+    build:
+      context: .
+      dockerfile: EdgeRpi.Dockerfile
+    ports:
+      - 8080:8080 # Apache Felix Web Console
+      - 8084:8084 # JSON/REST Api
+      - 8085:8085 # JSON/Websocket Api
+  ui:
+    build:
+      context: .
+      dockerfile: UiRpi.Dockerfile
+    ports:
+      - 4200:4200
+  backend:
+    build:
+      context: .
+      dockerfile: BackendRpi.Dockerfile
+    ports:
+      - 8075:8075 # Backend-to-Backend JSON/REST Api
+      - 8076:8076 # Backend-to-Backend JSON/Websocket Api
+      - 8079:8079 # Apache Felix Web Console
+      - 8081:8081 # Edge-Websocket
+      - 8082:8082 # UI-Websocket
+  odoo:
+    build:
+      context: .
+      dockerfile: OdooRpi.Dockerfile
+    ports:
+      - 8089:8089
+      - 8069:8069
+      - 8071:8071
+      - 8072:8072
+
+
