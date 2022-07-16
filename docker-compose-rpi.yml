@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.9"
 
 services:
   postgres:
@@ -30,8 +30,8 @@ services:
       - 4200:4200
   backend:
     depends_on:
-      - postgres
-      - odoo
+      odoo:
+        condition: service_healthy
     build:
       context: .
       dockerfile: BackendRpi.Dockerfile
