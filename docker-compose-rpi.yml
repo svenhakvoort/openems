@@ -10,6 +10,8 @@ services:
     ports:
       - 5432:5432
   edge:
+    depends_on:
+      - backend
     build:
       context: .
       dockerfile: EdgeRpi.Dockerfile
@@ -18,12 +20,18 @@ services:
       - 8084:8084 # JSON/REST Api
       - 8085:8085 # JSON/Websocket Api
   ui:
+    depends_on:
+      - backend
+      - edge
     build:
       context: .
       dockerfile: UiRpi.Dockerfile
     ports:
       - 4200:4200
   backend:
+    depends_on:
+      - postgres
+      - odoo
     build:
       context: .
       dockerfile: BackendRpi.Dockerfile
@@ -34,6 +42,13 @@ services:
       - 8081:8081 # Edge-Websocket
       - 8082:8082 # UI-Websocket
   odoo:
+    depends_on:
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8069" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
     build:
       context: .
       dockerfile: OdooRpi.Dockerfile
