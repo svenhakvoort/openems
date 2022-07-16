@@ -9,6 +9,8 @@ services:
       POSTGRES_DB: openems
     ports:
       - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
   edge:
     depends_on:
       - backend
@@ -58,4 +60,6 @@ services:
       - 8071:8071
       - 8072:8072
 
+volumes:
+  pg_data:
 
