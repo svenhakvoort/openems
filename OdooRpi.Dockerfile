@@ -32,8 +32,7 @@ RUN apt-get update \
             python3-xlrd \
             python3-xlwt \
             xz-utils \
-        && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
-        && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
+        && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.raspbian.stretch_armhf.deb \
         && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
@@ -91,6 +90,10 @@ RUN mkdir /workspace/odoo && cd /workspace/odoo && mkdir -p addons-available add
     ln -s ../addons-available/odoo-openems/openems
 
 # Set default user when running the container
+RUN chown odoo /entrypoint.sh
+RUN chown odoo /usr/local/bin/wait-for-psql.py
+RUN chmod 775 /entrypoint.sh
+RUN chmod 775 /usr/local/bin/wait-for-psql.py
 USER odoo
 
 ENTRYPOINT ["/entrypoint.sh"]

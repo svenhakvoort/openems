@@ -21,12 +21,12 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
     xfonts-75dpi \
     xfonts-base \
     && rm -rf /var/lib/apt/lists/*
-RUN wget http://archive.ubuntu.com/ubuntu/pool/main/libj/libjpeg-turbo/libjpeg-turbo8_2.0.6-0ubuntu2_amd64.deb
-RUN dpkg -i libjpeg-turbo8_2.0.6-0ubuntu2_amd64.deb
+RUN wget http://ftp.nl.debian.org/debian/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_1.5.2-2+deb10u1_armhf.deb
+RUN dpkg -i libjpeg62-turbo_1.5.2-2+deb10u1_armhf.deb
 
 # Install wkhtmltopdf
 ENV WKHTMLTOPDF_VERSION 0.12.6-1
-ENV WKHTMLTOPDF_RELEASE focal_amd64
+ENV WKHTMLTOPDF_RELEASE raspberrypi.buster_armhf
 RUN curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/packaging/releases/download/${WKHTMLTOPDF_VERSION}/wkhtmltox_${WKHTMLTOPDF_VERSION}.${WKHTMLTOPDF_RELEASE}.deb \
     && apt-get update \
     && apt-get install -y ./wkhtmltox.deb \
