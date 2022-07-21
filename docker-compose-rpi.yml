@@ -83,46 +83,46 @@ services:
       timeout: 5s
       retries: 10
 
-    dsmr:
-      image: xirixiz/dsmr-reader-docker:latest
-      depends_on:
-        dsmrdb:
-          condition: service_healthy
-      container_name: dsmr
-      links:
-        - dsmrdb
-      cap_add:
-        - NET_ADMIN
-      restart: always
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-        - ./dsmr_backups:/app/backups
-      environment:
-        - TZ=Europe/Amsterdam
-        - DJANGO_TIME_ZONE=Europe/Amsterdam
-        - VIRTUAL_HOST=localhost
-      ports:
-        - 7777:80
-        - 7779:443
-      devices:
-        - "/dev/ttyUSB1:/dev/ttyUSB0"
-      # healthcheck:
-      #   disable: true
-      healthcheck:
-        test:
-          [
-              "CMD",
-              "curl",
-              "-Lsf",
-              "http://127.0.0.1/about",
-              "-o",
-              "/dev/null",
-              "-w",
-              "HTTP_%{http_code}"
-          ]
-        interval: 10s
-        timeout: 5s
-        retries: 10
+  dsmr:
+    image: xirixiz/dsmr-reader-docker:latest
+    depends_on:
+      dsmrdb:
+        condition: service_healthy
+    container_name: dsmr
+    links:
+      - dsmrdb
+    cap_add:
+      - NET_ADMIN
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./dsmr_backups:/app/backups
+    environment:
+      - TZ=Europe/Amsterdam
+      - DJANGO_TIME_ZONE=Europe/Amsterdam
+      - VIRTUAL_HOST=localhost
+    ports:
+      - 7777:80
+      - 7779:443
+    devices:
+      - "/dev/ttyUSB1:/dev/ttyUSB0"
+    # healthcheck:
+    #   disable: true
+    healthcheck:
+      test:
+        [
+            "CMD",
+            "curl",
+            "-Lsf",
+            "http://127.0.0.1/about",
+            "-o",
+            "/dev/null",
+            "-w",
+            "HTTP_%{http_code}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
 volumes:
   pgdata:
