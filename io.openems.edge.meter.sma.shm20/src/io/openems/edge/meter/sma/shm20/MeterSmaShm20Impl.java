@@ -2,6 +2,7 @@ package io.openems.edge.meter.sma.shm20;
 
 import java.util.function.Consumer;
 
+import io.openems.edge.common.channel.LongReadChannel;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -23,7 +24,6 @@ import io.openems.edge.bridge.modbus.api.ModbusProtocol;
 import io.openems.edge.bridge.modbus.api.element.SignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
-import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.channel.value.Value;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.taskmanager.Priority;
@@ -168,11 +168,11 @@ public class MeterSmaShm20Impl extends AbstractOpenemsModbusComponent
 		this.getCurrentL3Channel().onSetNextValue(calculateSumCurrent);
 	}
 
-	private static class CalculatePower implements Consumer<Value<Integer>> {
+	private static class CalculatePower implements Consumer<Value<Long>> {
 
-		private final IntegerReadChannel consChannel;
-		private final IntegerReadChannel prodChannel;
-		private final IntegerReadChannel targetChannel;
+		private final LongReadChannel consChannel;
+		private final LongReadChannel prodChannel;
+		private final LongReadChannel targetChannel;
 
 		public static CalculatePower of(MeterSmaShm20Impl parent,
 				io.openems.edge.common.channel.ChannelId consChannelId,
@@ -196,10 +196,10 @@ public class MeterSmaShm20Impl extends AbstractOpenemsModbusComponent
 		}
 
 		@Override
-		public void accept(Value<Integer> ignore) {
+		public void accept(Value<Long> ignore) {
 			var prodValue = this.prodChannel.getNextValue();
 			var consValue = this.consChannel.getNextValue();
-			final Integer result;
+			final Long result;
 			if (prodValue.isDefined() && consValue.isDefined()) {
 				result = prodValue.get() - consValue.get();
 			} else {
