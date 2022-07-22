@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:10.0
+    network_mode: host
     environment:
       POSTGRES_USER: openems
       POSTGRES_PASSWORD: openems
@@ -10,6 +11,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
   edge:
+    network_mode: host
     depends_on:
       - backend
     devices:
@@ -22,6 +24,7 @@ services:
       - 8084:8084 # JSON/REST Api
       - 8085:8085 # JSON/Websocket Api
   ui:
+    network_mode: host
     depends_on:
       - backend
       - edge
@@ -31,6 +34,7 @@ services:
     ports:
       - 4200:4200
   backend:
+    network_mode: host
     depends_on:
       odoo:
         condition: service_healthy
@@ -44,6 +48,7 @@ services:
       - 8081:8081 # Edge-Websocket
       - 8082:8082 # UI-Websocket
   odoo:
+    network_mode: host
     depends_on:
       - postgres
     healthcheck:
