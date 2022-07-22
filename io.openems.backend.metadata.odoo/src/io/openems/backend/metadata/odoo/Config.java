@@ -26,7 +26,7 @@ public @interface Config {
 	String odooPassword();
 
 	@AttributeDefinition(name = "Postgres Host", description = "The Postgres host")
-	String pgHost() default "postgres";
+	String pgHost() default "localhost";
 
 	@AttributeDefinition(name = "Postgres Port", description = "The Postgres port")
 	int pgPort() default 5432;
