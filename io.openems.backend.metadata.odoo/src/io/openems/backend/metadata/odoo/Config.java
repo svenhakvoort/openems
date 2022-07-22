@@ -14,7 +14,7 @@ public @interface Config {
 	Protocol odooProtocol() default Protocol.HTTP;
 
 	@AttributeDefinition(name = "Odoo Host", description = "The odoo host")
-	String odooHost() default "odoo";
+	String odooHost() default "localhost";
 
 	@AttributeDefinition(name = "Odoo Port", description = "The odoo port")
 	int odooPort() default 8069;
