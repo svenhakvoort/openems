@@ -8,11 +8,11 @@ services:
       - "8090:8090"
       - "2003:2003"
     environment:
-      DOCKER_INFLUXDB_INIT_USERNAME: root
-      DOCKER_INFLUXDB_INIT_PASSWORD: root
-      DOCKER_INFLUXDB_INIT_ORG: openems
-      DOCKER_INFLUXDB_INIT_BUCKET: openems
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: openems
+      INFLUXDB_ADMIN_USER: root
+      INFLUXDB_ADMIN_PASSWORD: root
+      INFLUXDB_USER: openems
+      INFLUXDB_USER_PASSWORD: openems
+      INFLUXDB_DB: openems
     volumes:
       - influxData:/var/lib/influxdb
   postgres:
