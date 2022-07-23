@@ -45,8 +45,7 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 	public MeterSmaSunnyBoy3_0Impl() {
 		super(//
 				OpenemsComponent.ChannelId.values(), //
-				ModbusComponent.ChannelId.values(), //
-				SymmetricMeter.ChannelId.values()
+				ModbusComponent.ChannelId.values()
 		);
 	}
 
