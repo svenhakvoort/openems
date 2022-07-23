@@ -1,4 +1,27 @@
 services:
+  chronograf:
+    image: chronograf:latest
+    ports:
+      - '8888:8888'
+    volumes:
+      - chronografStorage:/var/lib/chronograf
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=openems
+      - INFLUXDB_PASSWORD=openems
+  grafana:
+    image: grafana/grafana:7.3.6
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafanaStorage:/var/lib/grafana
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=openems
+      - GF_SECURITY_ADMIN_PASSWORD=openems
   influxdb:
     image: influxdb:1.8.10
     container_name: influxdb
@@ -15,7 +38,6 @@ services:
       INFLUXDB_DB: openems
       INFLUXDB_HTTP_AUTH_ENABLED: true
       INFLUXDB_META_DIR: /var/lib/influxdb/meta2
-      INFLUXDB_ADMIN_ENABLED: true
     volumes:
       - influxData:/var/lib/influxdb
   postgres:
@@ -91,4 +113,7 @@ volumes:
   pgdata:
   edgeData:
   influxData:
+  grafanaStorage:
+  chronografStorage:
+
 
