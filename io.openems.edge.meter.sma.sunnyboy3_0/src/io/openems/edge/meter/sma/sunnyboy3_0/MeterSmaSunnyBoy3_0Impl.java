@@ -84,29 +84,12 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 				// Power Readings
 				new FC3ReadRegistersTask(30775, Priority.HIGH, //
 						m(MeterSmaSunnyBoy3_0.ChannelId.ACTIVE_PRODUCTION_POWER, new SignedDoublewordElement(30775))),
-				// Voltage, Power and Reactive Power
-				new FC3ReadRegistersTask(30789, Priority.HIGH, //
-						m(AsymmetricMeter.ChannelId.VOLTAGE_L1, new UnsignedDoublewordElement(30789),
-								ElementToChannelConverter.SCALE_FACTOR_1),
-						m(AsymmetricMeter.ChannelId.VOLTAGE_L2, new UnsignedDoublewordElement(30791),
-								ElementToChannelConverter.SCALE_FACTOR_1),
-						m(AsymmetricMeter.ChannelId.VOLTAGE_L3, new UnsignedDoublewordElement(30793),
-								ElementToChannelConverter.SCALE_FACTOR_1)
-						),
 				new FC3ReadRegistersTask(30805, Priority.HIGH, //
 						m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805))),
-				// Current
-				new FC3ReadRegistersTask(30797, Priority.HIGH, //
-						m(AsymmetricMeter.ChannelId.CURRENT_L1, new SignedDoublewordElement(30797)),
-						m(AsymmetricMeter.ChannelId.CURRENT_L2, new SignedDoublewordElement(30799)),
-						m(AsymmetricMeter.ChannelId.CURRENT_L3, new SignedDoublewordElement(30801))),
 				// Frequency
 				new FC3ReadRegistersTask(30803, Priority.LOW, //
 						m(SymmetricMeter.ChannelId.FREQUENCY, new UnsignedDoublewordElement(30803),
 								ElementToChannelConverter.SCALE_FACTOR_1)));
-
-		// Calculates required Channels from other existing Channels.
-		this.addCalculateChannelListeners();
 
 		return modbusProtocol;
 	}
@@ -114,32 +97,6 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 	@Override
 	public String debugLog() {
 		return "L:" + this.getActivePower().asString();
-	}
-
-	private void addCalculateChannelListeners() {
-		// Average Voltage from current L1, L2 and L3
-		final Consumer<Value<Integer>> calculateAverageVoltage = ignore -> {
-			this._setVoltage(TypeUtils.averageRounded(//
-					this.getVoltageL1Channel().getNextValue().get(), //
-					this.getVoltageL2Channel().getNextValue().get(), //
-					this.getVoltageL3Channel().getNextValue().get() //
-			));
-		};
-		this.getVoltageL1Channel().onSetNextValue(calculateAverageVoltage);
-		this.getVoltageL2Channel().onSetNextValue(calculateAverageVoltage);
-		this.getVoltageL3Channel().onSetNextValue(calculateAverageVoltage);
-
-		// Sum Current from Current L1, L2 and L3
-		final Consumer<Value<Integer>> calculateSumCurrent = ignore -> {
-			this._setCurrent(TypeUtils.sum(//
-					this.getCurrentL1Channel().getNextValue().get(), //
-					this.getCurrentL2Channel().getNextValue().get(), //
-					this.getCurrentL3Channel().getNextValue().get() //
-			));
-		};
-		this.getCurrentL1Channel().onSetNextValue(calculateSumCurrent);
-		this.getCurrentL2Channel().onSetNextValue(calculateSumCurrent);
-		this.getCurrentL3Channel().onSetNextValue(calculateSumCurrent);
 	}
 
 }
