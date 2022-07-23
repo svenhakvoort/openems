@@ -35,7 +35,7 @@ import io.openems.edge.common.channel.value.Value;
 		configurationPolicy = ConfigurationPolicy.REQUIRE //
 )
 public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
-		implements MeterSmaSunnyBoy3_0, AsymmetricMeter, SymmetricMeter, ModbusComponent, OpenemsComponent {
+		implements AsymmetricMeter, SymmetricMeter, ModbusComponent, OpenemsComponent {
 
 	private MeterType meterType = MeterType.PRODUCTION;
 
@@ -46,9 +46,7 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 		super(//
 				OpenemsComponent.ChannelId.values(), //
 				ModbusComponent.ChannelId.values(), //
-				SymmetricMeter.ChannelId.values(), //
-				AsymmetricMeter.ChannelId.values(), //
-				MeterSmaSunnyBoy3_0.ChannelId.values() //
+				SymmetricMeter.ChannelId.values()
 		);
 	}
 
@@ -84,6 +82,8 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 				// Power Readings
 				new FC3ReadRegistersTask(30775, Priority.HIGH, //
 						m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
+				new FC3ReadRegistersTask(30805, Priority.HIGH, //
+						m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805))),
 				// Frequency
 				new FC3ReadRegistersTask(30803, Priority.LOW, //
 						m(SymmetricMeter.ChannelId.FREQUENCY, new UnsignedDoublewordElement(30803),
