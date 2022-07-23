@@ -1,5 +1,6 @@
 services:
   chronograf:
+    network_mode: host
     image: chronograf:latest
     ports:
       - '8888:8888'
@@ -11,18 +12,8 @@ services:
       - INFLUXDB_URL=http://influxdb:8086
       - INFLUXDB_USERNAME=openems
       - INFLUXDB_PASSWORD=openems
-  grafana:
-    image: grafana/grafana:7.3.6
-    ports:
-      - '3000:3000'
-    volumes:
-      - grafanaStorage:/var/lib/grafana
-    depends_on:
-      - influxdb
-    environment:
-      - GF_SECURITY_ADMIN_USER=openems
-      - GF_SECURITY_ADMIN_PASSWORD=openems
   influxdb:
+    network_mode: host
     image: influxdb:1.8.10
     container_name: influxdb
     ports:
