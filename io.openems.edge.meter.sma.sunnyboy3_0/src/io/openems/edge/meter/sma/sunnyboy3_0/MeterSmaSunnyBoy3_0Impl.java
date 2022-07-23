@@ -1,38 +1,27 @@
 package io.openems.edge.meter.sma.sunnyboy3_0;
 
-import java.util.function.Consumer;
-
 import io.openems.common.exceptions.OpenemsException;
-import io.openems.edge.bridge.modbus.api.*;
+import io.openems.edge.bridge.modbus.api.AbstractOpenemsModbusComponent;
+import io.openems.edge.bridge.modbus.api.BridgeModbus;
+import io.openems.edge.bridge.modbus.api.ModbusComponent;
+import io.openems.edge.bridge.modbus.api.ModbusProtocol;
 import io.openems.edge.bridge.modbus.api.element.SignedDoublewordElement;
-import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
-import io.openems.edge.common.channel.IntegerReadChannel;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.taskmanager.Priority;
-import io.openems.edge.common.type.TypeUtils;
 import io.openems.edge.meter.api.AsymmetricMeter;
 import io.openems.edge.meter.api.MeterType;
 import io.openems.edge.meter.api.SymmetricMeter;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.Designate;
 
-import io.openems.edge.common.channel.value.Value;
-
 @Designate(ocd = Config.class, factory = true)
-@Component(//
-		name = "Meter.SMA.SunnyBoy3_0", //
-		immediate = true, //
-		configurationPolicy = ConfigurationPolicy.REQUIRE //
+@Component(
+		name = "Meter.SMA.SunnyBoy3_0", 
+		immediate = true, 
+		configurationPolicy = ConfigurationPolicy.REQUIRE 
 )
 public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 		implements AsymmetricMeter, SymmetricMeter, ModbusComponent, OpenemsComponent {
@@ -43,9 +32,10 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 	protected ConfigurationAdmin cm;
 
 	public MeterSmaSunnyBoy3_0Impl() {
-		super(//
-				OpenemsComponent.ChannelId.values(), //
-				ModbusComponent.ChannelId.values()
+		super(
+				OpenemsComponent.ChannelId.values(),
+				ModbusComponent.ChannelId.values(),
+				MeterSmaSunnyBoy3_0.ChannelId.values()
 		);
 	}
 
@@ -60,7 +50,6 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 		this.meterType = config.type();
 		if (super.activate(context, config.id(), config.alias(), config.enabled(), config.modbusUnitId(), this.cm,
 				"Modbus", config.modbus_id())) {
-			return;
 		}
 	}
 
@@ -77,18 +66,10 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 
 	@Override
 	protected ModbusProtocol defineModbusProtocol() throws OpenemsException {
-		var modbusProtocol = new ModbusProtocol(this,
-				// Power Readings
-				new FC3ReadRegistersTask(30775, Priority.HIGH, //
-						m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
-				new FC3ReadRegistersTask(30805, Priority.HIGH, //
-						m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805))),
-				// Frequency
-				new FC3ReadRegistersTask(30803, Priority.LOW, //
-						m(SymmetricMeter.ChannelId.FREQUENCY, new UnsignedDoublewordElement(30803),
-								ElementToChannelConverter.SCALE_FACTOR_1)));
-
-		return modbusProtocol;
+		return new ModbusProtocol(this,
+				new FC3ReadRegistersTask(30775, Priority.HIGH, 
+						m(MeterSmaSunnyBoy3_0.ChannelId.ACTIVE_PRODUCTION_POWER, new SignedDoublewordElement(30775)))
+		);
 	}
 
 	@Override
