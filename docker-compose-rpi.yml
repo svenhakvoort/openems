@@ -1,4 +1,20 @@
 services:
+  influxdb:
+    image: influxdb:1.8.10
+    container_name: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+      - "2003:2003"
+    environment:
+      - DOCKER_INFLUXDB_INIT_USERNAME: root
+      - DOCKER_INFLUXDB_INIT_PASSWORD: root
+      - DOCKER_INFLUXDB_INIT_ORG: openems
+      - DOCKER_INFLUXDB_INIT_BUCKET: openems
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: openems
+    volumes:
+      - influxData:/var/lib/influxdb
   postgres:
     image: postgres:10.0
     network_mode: host
@@ -71,4 +87,5 @@ services:
 volumes:
   pgdata:
   edgeData:
+  influxData:
 
