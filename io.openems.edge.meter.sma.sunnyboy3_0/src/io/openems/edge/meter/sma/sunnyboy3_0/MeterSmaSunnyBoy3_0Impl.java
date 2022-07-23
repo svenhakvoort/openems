@@ -19,9 +19,9 @@ import org.osgi.service.metatype.annotations.Designate;
 
 @Designate(ocd = Config.class, factory = true)
 @Component(
-		name = "Meter.SMA.SunnyBoy3_0", 
-		immediate = true, 
-		configurationPolicy = ConfigurationPolicy.REQUIRE 
+		name = "Meter.SMA.SunnyBoy3_0",
+		immediate = true,
+		configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 		implements AsymmetricMeter, SymmetricMeter, ModbusComponent, OpenemsComponent {
@@ -34,8 +34,7 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 	public MeterSmaSunnyBoy3_0Impl() {
 		super(
 				OpenemsComponent.ChannelId.values(),
-				ModbusComponent.ChannelId.values(),
-				MeterSmaSunnyBoy3_0.ChannelId.values()
+				ModbusComponent.ChannelId.values()
 		);
 	}
 
@@ -66,8 +65,8 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 	@Override
 	protected ModbusProtocol defineModbusProtocol() throws OpenemsException {
 		return new ModbusProtocol(this,
-				new FC3ReadRegistersTask(30775, Priority.HIGH, 
-						m(MeterSmaSunnyBoy3_0.ChannelId.ACTIVE_PRODUCTION_POWER, new SignedDoublewordElement(30775)))
+				new FC3ReadRegistersTask(30775, Priority.HIGH,
+						m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775)))
 		);
 	}
 
