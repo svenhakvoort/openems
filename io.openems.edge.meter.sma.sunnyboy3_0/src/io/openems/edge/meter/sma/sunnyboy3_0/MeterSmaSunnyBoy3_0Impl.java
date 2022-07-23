@@ -83,7 +83,7 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 		var modbusProtocol = new ModbusProtocol(this,
 				// Power Readings
 				new FC3ReadRegistersTask(30775, Priority.HIGH, //
-						m(MeterSmaSunnyBoy3_0.ChannelId.ACTIVE_PRODUCTION_POWER, new SignedDoublewordElement(30775))),
+						m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
 				new FC3ReadRegistersTask(30805, Priority.HIGH, //
 						m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805))),
 				// Frequency
