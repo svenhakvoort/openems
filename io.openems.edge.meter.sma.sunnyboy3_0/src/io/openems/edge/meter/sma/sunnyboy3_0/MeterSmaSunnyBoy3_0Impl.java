@@ -24,7 +24,7 @@ import org.osgi.service.metatype.annotations.Designate;
 		configurationPolicy = ConfigurationPolicy.REQUIRE
 )
 public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
-		implements AsymmetricMeter, SymmetricMeter, ModbusComponent, OpenemsComponent {
+		implements SymmetricMeter, ModbusComponent, OpenemsComponent {
 
 	private MeterType meterType = MeterType.PRODUCTION;
 
