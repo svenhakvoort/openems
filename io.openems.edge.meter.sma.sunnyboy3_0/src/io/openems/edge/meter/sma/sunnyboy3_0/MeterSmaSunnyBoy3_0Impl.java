@@ -84,8 +84,6 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 				// Power Readings
 				new FC3ReadRegistersTask(30775, Priority.HIGH, //
 						m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
-				new FC3ReadRegistersTask(30805, Priority.HIGH, //
-						m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805))),
 				// Frequency
 				new FC3ReadRegistersTask(30803, Priority.LOW, //
 						m(SymmetricMeter.ChannelId.FREQUENCY, new UnsignedDoublewordElement(30803),
