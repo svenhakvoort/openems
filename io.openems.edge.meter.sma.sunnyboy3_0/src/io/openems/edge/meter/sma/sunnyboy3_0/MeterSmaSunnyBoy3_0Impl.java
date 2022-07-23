@@ -91,7 +91,9 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 						m(AsymmetricMeter.ChannelId.VOLTAGE_L2, new UnsignedDoublewordElement(30791),
 								ElementToChannelConverter.SCALE_FACTOR_1),
 						m(AsymmetricMeter.ChannelId.VOLTAGE_L3, new UnsignedDoublewordElement(30793),
-								ElementToChannelConverter.SCALE_FACTOR_1),
+								ElementToChannelConverter.SCALE_FACTOR_1)
+						),
+				new FC3ReadRegistersTask(30805, Priority.HIGH, //
 						m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805))),
 				// Current
 				new FC3ReadRegistersTask(30797, Priority.HIGH, //
