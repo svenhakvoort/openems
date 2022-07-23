@@ -23,6 +23,8 @@ services:
       - 8080:8080 # Apache Felix Web Console
       - 8084:8084 # JSON/REST Api
       - 8085:8085 # JSON/Websocket Api
+    volumes:
+      - edgeData:/app/tools/docker/openems-edge/config.d
   ui:
     network_mode: host
     depends_on:
@@ -68,4 +70,5 @@ services:
 
 volumes:
   pgdata:
+  edgeData:
 
