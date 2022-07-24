@@ -14,7 +14,7 @@ services:
       - INFLUXDB_PASSWORD=root
   influxdb:
     network_mode: host
-    image: influxdb:1.8.10
+    image: influxdb:1.8.9
     container_name: influxdb
     ports:
       - "8083:8083"
