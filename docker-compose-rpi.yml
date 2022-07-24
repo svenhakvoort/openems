@@ -14,7 +14,7 @@ services:
       - INFLUXDB_PASSWORD=root
   influxdb:
     network_mode: host
-    image: influxdb:1.8.10
+    image: influxdb:1.8.3
     container_name: influxdb
     ports:
       - "8083:8083"
@@ -28,7 +28,6 @@ services:
       INFLUXDB_USER_PASSWORD: openems
       INFLUXDB_DB: openems
       INFLUXDB_HTTP_AUTH_ENABLED: true
-      INFLUXDB_MONITOR_STORE_ENABLED: false
       INFLUXDB_HTTP_FLUX_ENABLED: true
       INFLUXDB_META_DIR: /var/lib/influxdb/meta2
     volumes:
