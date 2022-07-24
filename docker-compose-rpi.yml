@@ -28,6 +28,7 @@ services:
       INFLUXDB_USER_PASSWORD: openems
       INFLUXDB_DB: openems
       INFLUXDB_HTTP_AUTH_ENABLED: true
+      INFLUXDB_HTTP_FLUX_ENABLED: true
       INFLUXDB_META_DIR: /var/lib/influxdb/meta2
     volumes:
       - influxData:/var/lib/influxdb
