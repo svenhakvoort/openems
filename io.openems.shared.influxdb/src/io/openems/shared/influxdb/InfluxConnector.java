@@ -295,6 +295,7 @@ public class InfluxConnector {
 		} catch (RuntimeException e) {
 			this.queryLimit.increase();
 			this.log.error("InfluxDB query runtime error. Query: " + query + ", Error: " + e.getMessage());
+			e.printStackTrace();
 			throw new OpenemsException(e.getMessage());
 		}
 		this.queryLimit.decrease();
