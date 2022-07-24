@@ -203,7 +203,7 @@ public class InfluxConnector {
 		var options = InfluxDBClientOptions.builder() //
 				.url(this.url.toString()) //
 				.org(org) //
-				.authenticateToken(String.format(this.apiKey).toCharArray()) //
+				.authenticateToken(this.apiKey.toCharArray()) //
 				.bucket(this.bucket) //
 				.okHttpClient(okHttpClientBuilder) //
 				.build();
