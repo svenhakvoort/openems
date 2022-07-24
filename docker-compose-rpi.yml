@@ -10,11 +10,11 @@ services:
       - influxdb
     environment:
       - INFLUXDB_URL=http://localhost:8086
-      - INFLUXDB_USERNAME=root
-      - INFLUXDB_PASSWORD=root
+      - INFLUXDB_USERNAME=openems
+      - INFLUXDB_PASSWORD=openems
   influxdb:
     network_mode: host
-    image: influxdb:1.8.3
+    image: influxdb:2.3.0
     container_name: influxdb
     ports:
       - "8083:8083"
@@ -22,11 +22,10 @@ services:
       - "8090:8090"
       - "2003:2003"
     environment:
-      INFLUXDB_ADMIN_USER: root
-      INFLUXDB_ADMIN_PASSWORD: root
-      INFLUXDB_USER: openems
-      INFLUXDB_USER_PASSWORD: openems
-      INFLUXDB_DB: openems
+      DOCKER_INFLUXDB_INIT_USERNAME: openems
+      DOCKER_INFLUXDB_INIT_PASSWORD: openems
+      DOCKER_INFLUXDB_INIT_ORG: openems
+      DOCKER_INFLUXDB_INIT_BUCKET: openems
       INFLUXDB_HTTP_AUTH_ENABLED: true
       INFLUXDB_HTTP_FLUX_ENABLED: true
       INFLUXDB_META_DIR: /var/lib/influxdb/meta2
