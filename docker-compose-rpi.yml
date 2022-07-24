@@ -10,8 +10,8 @@ services:
       - influxdb
     environment:
       - INFLUXDB_URL=http://localhost:8086
-      - INFLUXDB_USERNAME=openems
-      - INFLUXDB_PASSWORD=openems
+      - INFLUXDB_USERNAME=root
+      - INFLUXDB_PASSWORD=root
   influxdb:
     network_mode: host
     image: influxdb:1.8.10
@@ -22,10 +22,13 @@ services:
       - "8090:8090"
       - "2003:2003"
     environment:
-      INFLUXDB_ADMIN_USER: openems
-      INFLUXDB_ADMIN_PASSWORD: openems
+      INFLUXDB_ADMIN_USER: root
+      INFLUXDB_ADMIN_PASSWORD: root
+      INFLUXDB_USER: openems
+      INFLUXDB_USER_PASSWORD: openems
       INFLUXDB_DB: openems
       INFLUXDB_HTTP_AUTH_ENABLED: true
+      INFLUXDB_META_DIR: /var/lib/influxdb/meta2
     volumes:
       - influxData:/var/lib/influxdb
   postgres:
