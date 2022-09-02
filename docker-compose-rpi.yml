@@ -31,6 +31,7 @@ services:
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: openems
     volumes:
       - influxData:/var/lib/influxdb2
+      - influxConfig:/etc/influxdb2
   postgres:
     image: postgres:10.0
     network_mode: host
@@ -104,6 +105,7 @@ volumes:
   pgdata:
   edgeData:
   influxData:
+  influxConfig:
   grafanaStorage:
   chronografStorage:
 
