@@ -212,6 +212,7 @@ export const TRANSLATION = {
                     startTimeCharge: 'Start-Zeit Beladung',
                 },
                 GridOptimizedCharge: {
+                    chargingDelayed: 'Beladung verzögert',
                     considerGridFeedInLimit: 'Maximale Netzeinspeisung berücksichtigen',
                     endTime: 'Endzeit',
                     endTimeDescription: 'Die Beladung erfolgt nicht mit der Maximalleistung für wenige Stunden, sondern gleichmäßig über einen längeren Zeitraum.',
@@ -251,6 +252,7 @@ export const TRANSLATION = {
                     riskPropensity: 'Risikobereitschaft',
                     settingOnlyVisableForInstaller: 'Diese Einstellung ist nur für den Installateur sichtbar',
                     State: {
+                        avoidLowCharging: 'Geringe Beladung vermieden',
                         chargeLimitActive: 'Beladelimit aktiv',
                         endTimeNotCalculated: 'Endzeitpunkt nicht berechnet',
                         gridFeedInLimitationIsAvoided: 'Einspeisebegrenzung wird vermieden',
@@ -300,7 +302,7 @@ export const TRANSLATION = {
                     starting: 'Startet',
                     status: 'Status',
                     totalCharge: 'Gesamte Beladung',
-                    totalChargingPower: 'Gesamte Lade-Leistung',
+                    totalChargingPower: 'Gesamte Ladeleistung',
                     unknown: 'Unbekannt',
                     unplugged: 'Ausgesteckt',
                     Administration: {
@@ -431,7 +433,7 @@ export const TRANSLATION = {
                 simulator: 'Simulator',
                 systemExecute: 'System-Befehl ausführen',
                 systemProfile: 'Anlagenprofil',
-                alerting: 'Alarmierung',
+                alerting: 'Benachrichtigung',
             },
             More: {
                 manualCommand: 'Manueller Befehl',
@@ -469,9 +471,39 @@ export const TRANSLATION = {
             },
             Alerting: {
                 activate: 'Aktivieren',
-                delay: 'Verzögerung [min]',
+                delay: 'Verzögerung',
                 save: 'Speichern',
+                options: {
+                    15: '15 Minuten',
+                    60: '1 Stunde',
+                    1440: '1 Tag'
+                },
+                toast: {
+                    success: 'Einstellungen übernommen',
+                    error: 'Fehler beim Laden der Einstellungen'
+                },
             },
+            App: {
+                header: 'Der App-Manager befindet sich aktuell in einer ersten Testversion. Falls nicht alle Apps angezeigt werden, muss evtl. die FEMS Version geupdatet werden.',
+                installed: 'Installiert',
+                available: 'Verfügbar',
+                incompatible: 'Inkompatibel',
+                buyApp: 'App kaufen',
+                modifyApp: 'App bearbeiten',
+                createApp: 'App installieren',
+                deleteApp: 'App entfernen',
+                updateApp: 'App aktualisieren',
+                errorInstallable: 'Installierungs fehler',
+                errorCompatible: 'Kompatibilitäts fehler',
+            },
+        },
+        Service: {
+            entireSystem: "Gesamtsystem",
+            Cell: {
+                voltages: "Zellspannungen",
+                temperatures: "Zelltemperaturen",
+                insulation: "Isolation",
+            }
         }
     },
     About: {

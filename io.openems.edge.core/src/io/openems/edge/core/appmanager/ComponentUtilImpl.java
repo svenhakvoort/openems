@@ -10,6 +10,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -377,6 +378,21 @@ public class ComponentUtilImpl implements ComponentUtil {
 	}
 
 	@Override
+	public List<Relay> getAllRelays() {
+		List<DigitalOutput> allDigitalOutputs = this.getEnabledComponentsOfType(DigitalOutput.class);
+		List<Relay> relays = new LinkedList<>();
+		for (DigitalOutput digitalOutput : allDigitalOutputs) {
+			List<String> availableIos = new LinkedList<>();
+			for (var i = 0; i < digitalOutput.digitalOutputChannels().length; i++) {
+				var ioName = digitalOutput.id() + "/Relay" + (i + 1);
+				availableIos.add(ioName);
+			}
+			relays.add(new Relay(digitalOutput.id(), availableIos, digitalOutput.digitalOutputChannels().length));
+		}
+		return relays;
+	}
+
+	@Override
 	public List<Relay> getAvailableRelays() {
 		return this.getAvailableRelays(new ArrayList<>());
 	}
@@ -424,8 +440,7 @@ public class ComponentUtilImpl implements ComponentUtil {
 	@Override
 	public Component getComponentByConfig(Component component) {
 		for (var comp : this.componentManager.getEdgeConfig().getComponentsByFactory(component.getFactoryId())) {
-			var errors = new ArrayList<String>();
-			if (ComponentUtilImpl.isSameConfigurationWithoutIdAndAlias(errors, component, comp)) {
+			if (ComponentUtilImpl.isSameConfigurationWithoutIdAndAlias(null, component, comp)) {
 				return comp;
 			}
 		}
@@ -457,8 +472,8 @@ public class ComponentUtilImpl implements ComponentUtil {
 	}
 
 	@Override
-	public String getNextAvailableId(String baseName, List<Component> components) {
-		for (var i = 0; true; i++) {
+	public String getNextAvailableId(String baseName, int startingNumber, List<Component> components) {
+		for (var i = startingNumber; true; i++) {
 			var id = baseName + i;
 			try {
 				this.componentManager.getComponent(id);
@@ -581,9 +596,9 @@ public class ComponentUtilImpl implements ComponentUtil {
 	}
 
 	private void setSchedulerComponentIds(User user, List<String> componentIds) throws OpenemsNamedException {
-
 		try {
 			var scheduler = this.getScheduler();
+			// null is necessary otherwise a new configuration gets created
 			var config = this.cm.getConfiguration(scheduler.getPid(), null);
 
 			var properties = config.getProperties();
@@ -758,6 +773,15 @@ public class ComponentUtilImpl implements ComponentUtil {
 		if (!errors.isEmpty()) {
 			throw new OpenemsException(errors.stream().collect(Collectors.joining("|")));
 		}
+	}
+
+	@Override
+	public Optional<EdgeConfig.Component> getComponent(String id, String factoryId) {
+		var comp = this.componentManager.getEdgeConfig().getComponent(id);
+		if (comp.isEmpty() || !comp.get().getFactoryId().equals(factoryId)) {
+			return Optional.empty();
+		}
+		return comp;
 	}
 
 }

@@ -52,8 +52,7 @@ public class SolarEdgeGridMeter extends AbstractSunSpecMeter
 			.put(DefaultSunSpecModel.S_204, Priority.LOW) //
 			.build();
 
-	private final static int UNIT_ID = 1;
-	private final static int READ_FROM_MODBUS_BLOCK = 2;
+	private static final int READ_FROM_MODBUS_BLOCK = 2;
 
 	private Config config;
 
@@ -78,8 +77,8 @@ public class SolarEdgeGridMeter extends AbstractSunSpecMeter
 
 	@Activate
 	void activate(ComponentContext context, Config config) throws OpenemsException {
-		if (super.activate(context, config.id(), config.alias(), config.enabled(), UNIT_ID, this.cm, "Modbus",
-				config.modbus_id(), READ_FROM_MODBUS_BLOCK)) {
+		if (super.activate(context, config.id(), config.alias(), config.enabled(), config.modbusUnitId(), this.cm,
+				"Modbus", config.modbus_id(), READ_FROM_MODBUS_BLOCK)) {
 			return;
 		}
 		this.config = config;

@@ -5,12 +5,19 @@ import java.net.UnknownHostException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.stream.Collector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import com.google.common.collect.Sets;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -197,6 +204,18 @@ public class JsonUtils {
 		}
 
 		/**
+		 * Add a {@link Enum} value to the {@link JsonObject}.
+		 *
+		 * @param property the key
+		 * @param value    the value
+		 * @return the {@link JsonObjectBuilder}
+		 */
+		public JsonObjectBuilder addProperty(String property, Enum<?> value) {
+			this.j.addProperty(property, value == null ? null : value.name());
+			return this;
+		}
+
+		/**
 		 * Add a {@link Boolean} value to the {@link JsonObject}.
 		 *
 		 * @param property the key
@@ -267,6 +286,20 @@ public class JsonUtils {
 		}
 
 		/**
+		 * Add a {@link Enum} value to the {@link JsonObject}.
+		 *
+		 * @param property the key
+		 * @param value    the value
+		 * @return the {@link JsonObjectBuilder}
+		 */
+		public JsonObjectBuilder addPropertyIfNotNull(String property, Enum<?> value) {
+			if (value != null) {
+				this.j.addProperty(property, value.name());
+			}
+			return this;
+		}
+
+		/**
 		 * Call a method on a JsonObjectBuilder if an expression is true.
 		 *
 		 * @param expression     the expression
@@ -291,7 +324,48 @@ public class JsonUtils {
 
 	}
 
+	public static class JsonArrayCollector implements Collector<JsonElement, JsonUtils.JsonArrayBuilder, JsonArray> {
+
+		@Override
+		public Set<Characteristics> characteristics() {
+			return Sets.<Characteristics>newHashSet().stream().collect(Sets.toImmutableEnumSet());
+		}
+
+		@Override
+		public Supplier<JsonArrayBuilder> supplier() {
+			return JsonUtils::buildJsonArray;
+		}
+
+		@Override
+		public BiConsumer<JsonArrayBuilder, JsonElement> accumulator() {
+			return JsonUtils.JsonArrayBuilder::add;
+		}
+
+		@Override
+		public BinaryOperator<JsonArrayBuilder> combiner() {
+			return (t, u) -> {
+				u.build().forEach(j -> t.add(j));
+				return t;
+			};
+		}
+
+		@Override
+		public Function<JsonArrayBuilder, JsonArray> finisher() {
+			return JsonArrayBuilder::build;
+		}
+
+	}
+
 	private static final Logger LOG = LoggerFactory.getLogger(JsonUtils.class);
+
+	/**
+	 * Returns a Collector that accumulates the input elements into a new JsonArray.
+	 * 
+	 * @return a Collector which collects all the input elements into a JsonArray
+	 */
+	public static Collector<JsonElement, JsonUtils.JsonArrayBuilder, JsonArray> toJsonArray() {
+		return new JsonUtils.JsonArrayCollector();
+	}
 
 	/**
 	 * Creates a JsonArray using a Builder.
@@ -803,7 +877,7 @@ public class JsonUtils {
 		}
 		if (jPrimitive.isString()) {
 			var string = jPrimitive.getAsString();
-			return Integer.parseInt(string);
+			return Long.parseLong(string);
 		}
 		throw OpenemsError.JSON_NO_NUMBER.exception(jPrimitive.toString().replace("%", "%%"));
 	}
@@ -942,7 +1016,7 @@ public class JsonUtils {
 			throws OpenemsNamedException {
 		var element = getAsString(jElement);
 		try {
-			return Enum.valueOf(enumType, element);
+			return Enum.valueOf(enumType, element.toUpperCase());
 		} catch (IllegalArgumentException e) {
 			throw OpenemsError.JSON_NO_ENUM.exception(element);
 		}
@@ -962,7 +1036,7 @@ public class JsonUtils {
 			throws OpenemsNamedException {
 		var element = getAsString(jElement, memberName);
 		try {
-			return Enum.valueOf(enumType, element);
+			return Enum.valueOf(enumType, element.toUpperCase());
 		} catch (IllegalArgumentException e) {
 			throw OpenemsError.JSON_NO_ENUM_MEMBER.exception(memberName, element);
 		}
@@ -985,7 +1059,7 @@ public class JsonUtils {
 			return Optional.empty();
 		}
 		try {
-			return Optional.ofNullable(Enum.valueOf(enumType, elementOpt.get()));
+			return Optional.ofNullable(Enum.valueOf(enumType, elementOpt.get().toUpperCase()));
 		} catch (IllegalArgumentException e) {
 			return Optional.empty();
 		}
@@ -1346,12 +1420,17 @@ public class JsonUtils {
 	/**
 	 * Gets a {@link JsonElement} as the given {@link OpenemsType}.
 	 *
+	 * @param <T>  the Type for implicit casting of the result
 	 * @param type the {@link OpenemsType}
 	 * @param j    the {@link JsonElement}
 	 * @return an Object of the given type
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getAsType(OpenemsType type, JsonElement j) throws OpenemsNamedException {
+		if (j == null) {
+			return null;
+		}
+
 		if (j.isJsonNull()) {
 			return null;
 		}
