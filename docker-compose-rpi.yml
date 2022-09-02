@@ -1,7 +1,7 @@
 services:
   chronograf:
     network_mode: host
-    image: chronograf:latest
+    image: chronograf:1.9.4
     ports:
       - '8888:8888'
     volumes:
@@ -10,8 +10,9 @@ services:
       - influxdb
     environment:
       - INFLUXDB_URL=http://localhost:8086
-      - INFLUXDB_USERNAME=openems
-      - INFLUXDB_PASSWORD=openems
+      - INFLUXDB_ORG=openems
+      - INFLUXDB_INIT_BUCKET=openems
+      - INFLUXDB_TOKEN=openems
   influxdb:
     network_mode: host
     image: influxdb:2.3.0
@@ -29,7 +30,7 @@ services:
       DOCKER_INFLUXDB_INIT_BUCKET: openems
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: openems
     volumes:
-      - influxData:/var/lib/influxdb
+      - influxData:/var/lib/influxdb2
   postgres:
     image: postgres:10.0
     network_mode: host
