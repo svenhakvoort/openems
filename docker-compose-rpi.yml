@@ -24,7 +24,7 @@ services:
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: openems
-      DOCKER_INFLUXDB_INIT_PASSWORD: openems
+      DOCKER_INFLUXDB_INIT_PASSWORD: openemsopenems
       DOCKER_INFLUXDB_INIT_ORG: openems
       DOCKER_INFLUXDB_INIT_BUCKET: openems
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: openems
