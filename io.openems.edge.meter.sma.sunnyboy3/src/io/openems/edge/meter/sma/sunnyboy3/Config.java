@@ -1,4 +1,4 @@
-package io.openems.edge.meter.sma.sunnyboy3_0;
+package io.openems.edge.meter.sma.sunnyboy3;
 
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;

@@ -1,4 +1,4 @@
-package io.openems.edge.meter.sma.sunnyboy3_0;
+package io.openems.edge.meter.sma.sunnyboy3;
 
 import io.openems.common.utils.ConfigUtils;
 import io.openems.common.test.AbstractComponentConfig;

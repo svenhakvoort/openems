@@ -1,10 +1,10 @@
-package io.openems.edge.meter.sma.sunnyboy3_0;
+package io.openems.edge.meter.sma.sunnyboy3;
 
 import io.openems.common.channel.Unit;
 import io.openems.common.types.OpenemsType;
 import io.openems.edge.common.channel.Doc;
 
-public interface MeterSmaSunnyBoy3_0 {
+public interface MeterSmaSunnyBoy3 {
 
 	public enum ChannelId implements io.openems.edge.common.channel.ChannelId {
 		FREQUENCY(Doc.of(OpenemsType.INTEGER)
