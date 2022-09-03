@@ -21,7 +21,11 @@ public class SignedDoublewordElement extends AbstractDoubleWordElement<SignedDou
 
 	@Override
 	protected Long fromByteBuffer(ByteBuffer buff) {
-		return Long.valueOf(buff.getInt());
+		int intValue = buff.getInt();
+		if (intValue == Integer.MAX_VALUE || intValue == Integer.MIN_VALUE) {
+			return 0L;
+		}
+		return (long) intValue;
 	}
 
 	@Override

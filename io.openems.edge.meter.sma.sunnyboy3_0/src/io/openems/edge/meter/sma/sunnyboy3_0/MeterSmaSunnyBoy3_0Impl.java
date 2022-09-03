@@ -6,9 +6,13 @@ import io.openems.edge.bridge.modbus.api.BridgeModbus;
 import io.openems.edge.bridge.modbus.api.ModbusComponent;
 import io.openems.edge.bridge.modbus.api.ModbusProtocol;
 import io.openems.edge.bridge.modbus.api.element.SignedDoublewordElement;
+import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
+import io.openems.edge.common.channel.Channel;
+import io.openems.edge.common.channel.value.Value;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.taskmanager.Priority;
+import io.openems.edge.common.type.TypeUtils;
 import io.openems.edge.meter.api.AsymmetricMeter;
 import io.openems.edge.meter.api.MeterType;
 import io.openems.edge.meter.api.SymmetricMeter;
@@ -17,14 +21,15 @@ import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.Designate;
 
+import java.util.function.Consumer;
+
 @Designate(ocd = Config.class, factory = true)
 @Component(
 		name = "Meter.SMA.SunnyBoy3_0",
 		immediate = true,
 		configurationPolicy = ConfigurationPolicy.REQUIRE
 )
-public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
-		implements SymmetricMeter, ModbusComponent, OpenemsComponent {
+public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent implements SymmetricMeter, ModbusComponent, OpenemsComponent, MeterSmaSunnyBoy3_0 {
 
 	private MeterType meterType = MeterType.PRODUCTION;
 
@@ -35,7 +40,8 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 		super(
 				OpenemsComponent.ChannelId.values(),
 				ModbusComponent.ChannelId.values(),
-				SymmetricMeter.ChannelId.values()
+				SymmetricMeter.ChannelId.values(),
+				MeterSmaSunnyBoy3_0.ChannelId.values()
 		);
 	}
 
@@ -65,10 +71,24 @@ public class MeterSmaSunnyBoy3_0Impl extends AbstractOpenemsModbusComponent
 
 	@Override
 	protected ModbusProtocol defineModbusProtocol() throws OpenemsException {
-		return new ModbusProtocol(this,
-				new FC3ReadRegistersTask(30775, Priority.HIGH,
-						m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775)))
+		var modbusProtocol = new ModbusProtocol(this,
+				new FC3ReadRegistersTask(30775, Priority.HIGH, m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
+				new FC3ReadRegistersTask(30803, Priority.HIGH, m(MeterSmaSunnyBoy3_0.ChannelId.FREQUENCY, new UnsignedDoublewordElement(30803))),
+				new FC3ReadRegistersTask(30805, Priority.HIGH, m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805)))
 		);
+
+		this.addCalculateChannelListeners();
+
+		return modbusProtocol;
+	}
+
+	private void addCalculateChannelListeners() {
+		Channel<Long> frequencyChannelInHertz = this.channel(MeterSmaSunnyBoy3_0.ChannelId.FREQUENCY);
+		final Consumer<Value<Long>> convertHertzToMilliHertz = value -> {
+			this.getFrequencyChannel().setNextValue(value.get().intValue() / 1000);
+		};
+
+		frequencyChannelInHertz.onSetNextValue(convertHertzToMilliHertz);
 	}
 
 	@Override
