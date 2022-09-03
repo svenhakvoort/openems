@@ -3,7 +3,6 @@ package io.openems.edge.meter.sma.sunnyboy3;
 import io.openems.common.utils.ConfigUtils;
 import io.openems.common.test.AbstractComponentConfig;
 import io.openems.edge.meter.api.MeterType;
-import io.openems.edge.pvinverter.sunspec.Phase;
 
 @SuppressWarnings("all")
 public class MyConfig extends AbstractComponentConfig implements Config {
@@ -13,18 +12,12 @@ public class MyConfig extends AbstractComponentConfig implements Config {
 		private String modbusId = null;
 		public int modbusUnitId;
 		public MeterType type;
-		public Phase phase;
 
 		private Builder() {
 		}
 
 		public Builder setId(String id) {
 			this.id = id;
-			return this;
-		}
-
-		public Builder setPhase(Phase phase) {
-			this.phase = phase;
 			return this;
 		}
 
@@ -75,8 +68,8 @@ public class MyConfig extends AbstractComponentConfig implements Config {
 	}
 
 	@Override
-	public Phase phase() {
-		return this.builder.phase;
+	public MeterType type() {
+		return this.builder.type;
 	}
 
 }
