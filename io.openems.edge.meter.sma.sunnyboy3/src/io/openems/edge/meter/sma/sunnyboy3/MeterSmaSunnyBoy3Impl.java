@@ -78,7 +78,7 @@ public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implem
 	protected ModbusProtocol defineModbusProtocol() throws OpenemsException {
 		var modbusProtocol = new ModbusProtocol(this,
 				new FC3ReadRegistersTask(30775, Priority.HIGH, m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
-				new FC3ReadRegistersTask(30803, Priority.HIGH, m(MeterSmaSunnyBoy3.ChannelId.FREQUENCY, new UnsignedDoublewordElement(30803))),
+				new FC3ReadRegistersTask(30803, Priority.HIGH, m(MeterSmaSunnyBoy3.ChannelId.FREQUENCY_IN_HERTZ, new UnsignedDoublewordElement(30803))),
 				new FC3ReadRegistersTask(30805, Priority.HIGH, m(SymmetricMeter.ChannelId.REACTIVE_POWER, new SignedDoublewordElement(30805)))
 		);
 
@@ -88,7 +88,7 @@ public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implem
 	}
 
 	private void addCalculateChannelListeners() {
-		Channel<Long> frequencyChannelInHertz = this.channel(MeterSmaSunnyBoy3.ChannelId.FREQUENCY);
+		Channel<Long> frequencyChannelInHertz = this.channel(MeterSmaSunnyBoy3.ChannelId.FREQUENCY_IN_HERTZ);
 		final Consumer<Value<Long>> convertHertzToMilliHertz = value -> {
 			this.getFrequencyChannel().setNextValue(value.get().intValue() / 1000);
 		};

@@ -7,7 +7,7 @@ import io.openems.edge.common.channel.Doc;
 public interface MeterSmaSunnyBoy3 {
 
 	public enum ChannelId implements io.openems.edge.common.channel.ChannelId {
-		FREQUENCY(Doc.of(OpenemsType.INTEGER)
+		FREQUENCY_IN_HERTZ(Doc.of(OpenemsType.INTEGER)
 				.unit(Unit.HERTZ))
 		;
 
