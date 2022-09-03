@@ -1,5 +1,6 @@
 package io.openems.edge.meter.sma.sunnyboy3;
 
+import io.openems.edge.pvinverter.sunspec.Phase;
 import org.junit.Test;
 
 import io.openems.edge.bridge.modbus.test.DummyModbusBridge;
@@ -20,6 +21,7 @@ public class MeterSmaSunnyBoy3ImplTest {
 				.activate(MyConfig.create() //
 						.setId(METER_ID) //
 						.setModbusId(MODBUS_ID) //
+						.setPhase(Phase.ALL)
 						.setType(MeterType.GRID) //
 						.build()) //
 		;

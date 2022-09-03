@@ -23,6 +23,11 @@ public class MyConfig extends AbstractComponentConfig implements Config {
 			return this;
 		}
 
+		public Builder setPhase(Phase phase) {
+			this.phase = phase;
+			return this;
+		}
+
 		public Builder setModbusId(String modbusId) {
 			this.modbusId = modbusId;
 			return this;
