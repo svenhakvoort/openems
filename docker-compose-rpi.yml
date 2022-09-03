@@ -108,7 +108,7 @@ services:
     container_name: dsmrdb
     restart: always
     volumes:
-      - ./dsmrdb:/var/lib/postgresql/data
+      - dsmrdb:/var/lib/postgresql/data
     environment:
       - TZ=Europe/Amsterdam
       - PG_TZ=Europe/Amsterdam
@@ -136,7 +136,7 @@ services:
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./dsmr_backups:/app/backups
+      - dsmr_backups:/app/backups
     environment:
       - TZ=Europe/Amsterdam
       - DJANGO_TIME_ZONE=Europe/Amsterdam
