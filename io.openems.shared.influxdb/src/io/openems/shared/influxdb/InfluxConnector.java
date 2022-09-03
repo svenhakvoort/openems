@@ -200,7 +200,7 @@ public class InfluxConnector {
 		// to set timeout
 		var options = InfluxDBClientOptions.builder() //
 				.url(this.url.toString()) //
-				.org(org) //
+				.org(this.org) //
 				.authenticateToken(this.apiKey.toCharArray()) //
 				.bucket(this.bucket) //
 				.okHttpClient(okHttpClientBuilder) //
