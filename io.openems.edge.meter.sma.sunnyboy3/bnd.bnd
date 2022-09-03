@@ -1,7 +1,7 @@
-Bundle-Name: OpenEMS Edge PV Inverter SMA Sunny Tripower
-Bundle-Vendor: FENECON GmbH
-Bundle-License: https://opensource.org/licenses/EPL-2.0
+Bundle-Name: OpenEMS Edge Meter SMA Sunny Boy 3.0
+Bundle-Vendor: Martin Gruening
 Bundle-Version: 1.0.0.${tstamp}
+Bundle-License: https://opensource.org/licenses/EPL-2.0
 
 -buildpath: \
 	${buildpath},\
@@ -13,4 +13,5 @@ Bundle-Version: 1.0.0.${tstamp}
 	io.openems.edge.pvinverter.sunspec
 
 -testpath: \
-	${testpath}
+	${testpath},\
+	com.ghgande.j2mod

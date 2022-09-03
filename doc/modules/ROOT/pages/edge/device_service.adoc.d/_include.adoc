@@ -87,6 +87,8 @@ include::io.openems.edge.meter.schneider.acti9.smartlink.adoc[leveloffset=+1]
 
 include::io.openems.edge.meter.sma.shm20.adoc[leveloffset=+1]
 
+include::io.openems.edge.meter.sma.sunnyboy3.adoc[leveloffset=+1]
+
 include::io.openems.edge.meter.socomec.adoc[leveloffset=+1]
 
 include::io.openems.edge.meter.sunspec.adoc[leveloffset=+1]

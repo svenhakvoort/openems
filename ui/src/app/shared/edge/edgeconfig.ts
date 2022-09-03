@@ -288,7 +288,7 @@ export class EdgeConfig {
             case 'PV-Inverter.Fronius':
             case 'PV-Inverter.KACO.blueplanet':
             case 'PV-Inverter.Kostal':
-            case 'PV-Inverter.SMA':
+            case 'PV-Inverter.SMA.SunnyTripower':
             case 'PV-Inverter.Solarlog':
             case 'PV-Inverter.SunSpec':
             case 'Simulator.ProductionMeter.Acting':

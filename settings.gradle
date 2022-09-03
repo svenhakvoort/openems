@@ -9,4 +9,5 @@ buildscript {
 }
 
 apply plugin: 'biz.aQute.bnd.workspace'
+include 'sunnyBoy3'
 

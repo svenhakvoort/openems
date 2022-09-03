@@ -39,7 +39,7 @@ import io.openems.edge.pvinverter.sunspec.SunSpecPvInverter;
 
 @Designate(ocd = Config.class, factory = true)
 @Component(//
-		name = "PV-Inverter.SMA", //
+		name = "PV-Inverter.SMA.SunnyTripower", //
 		immediate = true, //
 		configurationPolicy = ConfigurationPolicy.REQUIRE, //
 		property = { //
@@ -61,7 +61,7 @@ public class SmaPvInverter extends AbstractSunSpecPvInverter implements SunSpecP
 			.put(DefaultSunSpecModel.S_123, Priority.LOW) // from 40343
 			.build();
 
-	// Further available SunSpec blocks provided by SMA are:
+	// Further available SunSpec blocks provided by SMA Sunny TriPower are:
 	// .put(DefaultSunSpecModel.S_11, Priority.LOW) // from 40070
 	// .put(DefaultSunSpecModel.S_12, Priority.LOW) // from 40085
 	// .put(DefaultSunSpecModel.S_124, Priority.LOW) // from 40369
