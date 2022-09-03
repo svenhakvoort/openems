@@ -110,7 +110,3 @@ volumes:
   influxConfig:
   grafanaStorage:
   chronografStorage:
-  dsmrdb:
-  dsmrdb_backups:
-
-
