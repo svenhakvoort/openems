@@ -134,7 +134,6 @@
 	bnd.identity;id='io.openems.edge.meter.schneider.acti9.smartlink',\
 	bnd.identity;id='io.openems.edge.meter.siemens',\
 	bnd.identity;id='io.openems.edge.meter.sma.shm20',\
-	bnd.identity;id='io.openems.edge.meter.sma.sunnyboy3',\
 	bnd.identity;id='io.openems.edge.meter.socomec',\
 	bnd.identity;id='io.openems.edge.meter.sunspec',\
 	bnd.identity;id='io.openems.edge.meter.virtual',\
@@ -283,7 +282,6 @@
 	io.openems.edge.meter.schneider.acti9.smartlink;version=snapshot,\
 	io.openems.edge.meter.siemens;version=snapshot,\
 	io.openems.edge.meter.sma.shm20;version=snapshot,\
-	io.openems.edge.meter.sma.sunnyboy3;version=snapshot,\
 	io.openems.edge.meter.socomec;version=snapshot,\
 	io.openems.edge.meter.sunspec;version=snapshot,\
 	io.openems.edge.meter.virtual;version=snapshot,\

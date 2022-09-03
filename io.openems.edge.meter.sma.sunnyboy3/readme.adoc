@@ -1,4 +1,0 @@
-= SMA Sunny Boy 3.0
-
-https://github.com/OpenEMS/openems/tree/develop/io.openems.edge.meter.sma.sunnyboy3[Source Code icon:github[]]
-

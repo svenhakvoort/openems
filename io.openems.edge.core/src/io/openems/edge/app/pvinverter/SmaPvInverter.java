@@ -84,7 +84,7 @@ public class SmaPvInverter extends AbstractPvInverter<Property> implements Opene
 			var modbusId = this.getId(t, p, Property.MODBUS_ID, "modbus0");
 			var pvInverterId = this.getId(t, p, Property.PV_INVERTER_ID, "pvInverter0");
 
-			var factoryIdInverter = "PV-Inverter.SMA.SunnyTripower";
+			var factoryIdInverter = "PV-Inverter.SMA.SunnyBoy";
 			var components = this.getComponents(factoryIdInverter, pvInverterId, modbusId, alias, ip, port);
 			var inverter = AbstractOpenemsApp.getComponentWithFactoryId(components, factoryIdInverter);
 			inverter.getProperties().put("modbusUnitId", new JsonPrimitive(modbusUnitId));
