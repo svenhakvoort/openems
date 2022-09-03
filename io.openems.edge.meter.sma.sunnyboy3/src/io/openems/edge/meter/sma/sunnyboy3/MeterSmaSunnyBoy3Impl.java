@@ -88,9 +88,9 @@ public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implem
 	}
 
 	private void addCalculateChannelListeners() {
-		Channel<Long> frequencyChannelInHertz = this.channel(MeterSmaSunnyBoy3.ChannelId.FREQUENCY_IN_HERTZ);
-		final Consumer<Value<Long>> convertHertzToMilliHertz = value -> {
-			this.getFrequencyChannel().setNextValue(value.get().intValue() / 1000);
+		Channel<Integer> frequencyChannelInHertz = this.channel(MeterSmaSunnyBoy3.ChannelId.FREQUENCY_IN_HERTZ);
+		final Consumer<Value<Integer>> convertHertzToMilliHertz = value -> {
+			this.getFrequencyChannel().setNextValue(value.get() / 1000);
 		};
 
 		frequencyChannelInHertz.onSetNextValue(convertHertzToMilliHertz);
