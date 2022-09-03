@@ -48,7 +48,7 @@ services:
     depends_on:
       - backend
     devices:
-      - "/dev:/dev"
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
     build:
       context: .
       dockerfile: EdgeRpi.Dockerfile
@@ -150,7 +150,7 @@ services:
       - 7777:80
       - 7779:443
     devices:
-      - "/dev:/dev"
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
     healthcheck:
       test:
         [
