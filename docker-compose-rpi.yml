@@ -82,6 +82,8 @@ services:
       - 8079:8079 # Apache Felix Web Console
       - 8081:8081 # Edge-Websocket
       - 8082:8082 # UI-Websocket
+    volumes:
+      - /etc/systemd/network:/etc/systemd/network:ro
   odoo:
     network_mode: host
     depends_on:
