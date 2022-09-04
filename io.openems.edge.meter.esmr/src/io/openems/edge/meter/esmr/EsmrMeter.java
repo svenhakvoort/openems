@@ -74,6 +74,14 @@ public class EsmrMeter extends AbstractOpenemsMbusComponent implements Asymmetri
         var channel1 = new ChannelRecord(this.channel(TEST), 0);
         channel1.getChannel().onSetNextValue(value -> System.out.println("GRIDMETER VALUE: " + value));
         this.channelDataRecordsList.add(channel1);
+
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L1), 1));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L2), 2));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 3));
+        // TODO mapping seems to be wrong; L3 is repeated
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 4));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 5));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 6));
     }
 
 }
