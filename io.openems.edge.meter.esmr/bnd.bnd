@@ -6,7 +6,7 @@ Bundle-License: https://opensource.org/licenses/EPL-2.0
 -buildpath: \
 	${buildpath},\
 	io.openems.common,\
-	io.openems.edge.bridge.mbus,\
+	io.openems.edge.bridge.esmr,\
 	io.openems.edge.common,\
 	io.openems.edge.meter.api
 

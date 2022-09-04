@@ -1,18 +1,18 @@
-package io.openems.edge.bridge.mbus;
+package io.openems.edge.bridge.esmr;
 
-import org.openmuc.jrxtx.DataBits;
-import org.openmuc.jrxtx.Parity;
-import org.openmuc.jrxtx.StopBits;
+import io.openems.edge.bridge.esmr.util.DataBits;
+import io.openems.edge.bridge.esmr.util.Parity;
+import io.openems.edge.bridge.esmr.util.StopBits;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @ObjectClassDefinition(//
-		name = "Bridge M-Bus", //
-		description = "Provides a service for connecting to, reading and writing an M-Bus device.")
+		name = "Bridge ESMR", //
+		description = "Provides a service for connecting to, reading and writing an ESMR device.")
 @interface Config {
 
 	@AttributeDefinition(name = "Component-ID", description = "Unique ID of this Component")
-	String id() default "mbus0";
+	String id() default "esmr0";
 
 	@AttributeDefinition(name = "Alias", description = "Human-readable name of this Component; defaults to Component-ID")
 	String alias() default "";
@@ -35,5 +35,4 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 	@AttributeDefinition(name = "Stop bits", description = "Serial Device stop bits")
 	StopBits stopBits() default StopBits.STOPBITS_1;
 
-	String webconsole_configurationFactory_nameHint() default "Bridge M-Bus [{id}]";
 }
