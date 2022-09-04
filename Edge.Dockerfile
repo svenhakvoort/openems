@@ -1,8 +1,12 @@
 FROM openjdk:11-jdk-slim
 
+USER 1000
 WORKDIR /app
 
 RUN apt-get update && apt-get install librxtx-java
+RUN adduser 1000 dialout
+RUN adduser 1000 tty
+
 COPY . .
 RUN ./gradlew build buildEdge -x test
 
