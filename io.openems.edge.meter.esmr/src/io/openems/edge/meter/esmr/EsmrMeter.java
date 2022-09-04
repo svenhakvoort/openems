@@ -4,27 +4,16 @@ import io.openems.edge.bridge.mbus.api.AbstractOpenemsMbusComponent;
 import io.openems.edge.bridge.mbus.api.BridgeMbus;
 import io.openems.edge.bridge.mbus.api.ChannelRecord;
 import io.openems.edge.bridge.mbus.api.MbusTask;
-import io.openems.edge.common.channel.value.Value;
 import io.openems.edge.common.component.OpenemsComponent;
-import io.openems.edge.common.type.TypeUtils;
 import io.openems.edge.meter.api.AsymmetricMeter;
 import io.openems.edge.meter.api.MeterType;
+import io.openems.edge.meter.api.SymmetricMeter;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.metatype.annotations.Designate;
 
-import java.util.function.Consumer;
-
 import static io.openems.edge.meter.esmr.ChannelId.TEST;
-import static io.openems.edge.meter.esmr.ChannelId.TOTAL_CONSUMED_ENERGY;
 
 @Designate(ocd = Config.class, factory = true)
 @Component(
@@ -32,7 +21,7 @@ import static io.openems.edge.meter.esmr.ChannelId.TOTAL_CONSUMED_ENERGY;
         immediate = true,
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
-public class EsmrMeter extends AbstractOpenemsMbusComponent implements AsymmetricMeter, OpenemsComponent {
+public class EsmrMeter extends AbstractOpenemsMbusComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent {
 
     private MeterType meterType = MeterType.GRID;
 
@@ -45,6 +34,7 @@ public class EsmrMeter extends AbstractOpenemsMbusComponent implements Asymmetri
     public EsmrMeter() {
         super(
                 OpenemsComponent.ChannelId.values(),
+                SymmetricMeter.ChannelId.values(),
                 AsymmetricMeter.ChannelId.values(),
                 io.openems.edge.meter.esmr.ChannelId.values()
         );
