@@ -1,0 +1,15 @@
+Bundle-Name: OpenEMS Edge Meter ESMR
+Bundle-Vendor: Martin Gruening
+Bundle-Version: 1.0.0.${tstamp}
+Bundle-License: https://opensource.org/licenses/EPL-2.0
+
+-buildpath: \
+	${buildpath},\
+	io.openems.common,\
+	io.openems.edge.bridge.mbus,\
+	io.openems.edge.common,\
+	io.openems.edge.meter.api
+
+-testpath: \
+	${testpath},\
+	com.ghgande.j2mod
