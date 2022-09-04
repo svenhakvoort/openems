@@ -5,9 +5,8 @@ WORKDIR /app
 USER root
 RUN apt-get update && apt-get install librxtx-java
 
-RUN adduser 1000 dialout
-RUN adduser 1000 tty
-USER 1000
+RUN adduser root dialout
+RUN adduser root tty
 
 COPY . .
 RUN ./gradlew build buildEdge -x test
