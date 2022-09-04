@@ -7,6 +7,9 @@ import java.util.Map;
 import org.openmuc.jmbus.DecodingException;
 import org.openmuc.jmbus.MBusConnection;
 import org.openmuc.jmbus.MBusConnection.MBusSerialBuilder;
+import org.openmuc.jrxtx.DataBits;
+import org.openmuc.jrxtx.Parity;
+import org.openmuc.jrxtx.StopBits;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -57,7 +60,12 @@ public class BridgeMbusImpl extends AbstractOpenemsComponent implements BridgeMb
 
 		this.worker.activate(config.id());
 
-		this.builder = MBusConnection.newSerialBuilder(this.portName).setBaudrate(config.baudrate());
+		this.builder = MBusConnection.newSerialBuilder(this.portName)
+				.setBaudrate(config.baudrate())
+				.setDataBits(config.dataBits())
+				.setParity(config.parity())
+				.setStopBits(config.stopBits())
+		;
 	}
 
 	@Override
