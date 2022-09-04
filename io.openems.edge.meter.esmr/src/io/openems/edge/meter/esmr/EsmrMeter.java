@@ -42,7 +42,7 @@ public class EsmrMeter extends AbstractOpenemsMbusComponent implements Asymmetri
     @Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
     protected BridgeMbus mbus;
 
-    protected EsmrMeter() {
+    public EsmrMeter() {
         super(
                 OpenemsComponent.ChannelId.values(),
                 AsymmetricMeter.ChannelId.values(),
