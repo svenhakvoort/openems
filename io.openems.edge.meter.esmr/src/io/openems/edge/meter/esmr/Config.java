@@ -11,9 +11,6 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 	@AttributeDefinition(name = "Component-ID", description = "Unique ID of this Component")
 	String id() default "meter0";
 
-	@AttributeDefinition(name = "Mbus PrimaryAddress", description = "PrimaryAddress of the M-Bus device.")
-	int primaryAddress() default 10;
-
 	@AttributeDefinition(name = "Alias", description = "Human-readable name of this Component; defaults to Component-ID")
 	String alias() default "";
 
@@ -23,8 +20,8 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 	@AttributeDefinition(name = "Meter-Type", description = "What is measured by this Meter?")
 	MeterType type() default MeterType.GRID;
 
-	@AttributeDefinition(name = "Mbus-ID", description = "ID of M-Bus bridge.")
-	String mbus_id() default "mbus0";
+	@AttributeDefinition(name = "ESMR-ID", description = "ID of ESMR bridge.")
+	String esmr_id() default "esmr0";
 
 	String webconsole_configurationFactory_nameHint() default "Meter ESMR M-Bus [{id}]";
 

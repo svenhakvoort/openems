@@ -4,7 +4,6 @@ import io.openems.edge.bridge.esmr.api.AbstractOpenemsEsmrComponent;
 import io.openems.edge.bridge.esmr.api.BridgeEsmr;
 import io.openems.edge.bridge.esmr.api.ChannelRecord;
 import io.openems.edge.bridge.esmr.api.EsmrTask;
-import io.openems.edge.common.component.AbstractOpenemsComponent;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.meter.api.AsymmetricMeter;
 import io.openems.edge.meter.api.MeterType;
@@ -43,8 +42,8 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
     @Activate
     void activate(ComponentContext context, Config config) {
         this.meterType = config.type();
-        super.activate(context, config.id(), config.alias(), config.enabled());
-        // register into mbus bridge task list
+        super.activate(context, config.id(), config.alias(), config.enabled(), cm, config.esmr_id());
+
         this.esmrBus.addTask(config.id(), new EsmrTask(this.esmrBus, this));
     }
 

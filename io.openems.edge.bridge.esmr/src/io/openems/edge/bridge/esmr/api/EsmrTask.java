@@ -1,6 +1,5 @@
 package io.openems.edge.bridge.esmr.api;
 
-import io.openems.edge.common.component.AbstractOpenemsComponent;
 import nl.basjes.dsmr.DSMRTelegram;
 
 public class EsmrTask {
