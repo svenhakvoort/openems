@@ -48,7 +48,7 @@ services:
     depends_on:
       - backend
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev:/dev"
     build:
       context: .
       dockerfile: EdgeRpi.Dockerfile
