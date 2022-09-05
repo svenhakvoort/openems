@@ -1,4 +1,4 @@
-VOLUMES=("openems_chronografStorage" "openems_edgeData" "openems_pgdata" "openems_influxData" "openems_influxConfig" "openems_grafanaStorage" "openems_chronografStorage")
+VOLUMES=("openems_chronografStorage" "openems_edgeData" "openems_pgdata" "openems_influxData" "openems_influxConfig" "openems_grafanaStorage" "openems_chronografStorage" "openems_backendData")
 
 mkdir ~/backups
 for volume in "${VOLUMES[@]}"

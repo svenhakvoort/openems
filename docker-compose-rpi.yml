@@ -84,6 +84,8 @@ services:
       - 8079:8079 # Apache Felix Web Console
       - 8081:8081 # Edge-Websocket
       - 8082:8082 # UI-Websocket
+    volumes:
+      - backendData:/app/tools/docker/openems-backend/config.d
   odoo:
     network_mode: host
     depends_on:
@@ -106,6 +108,7 @@ services:
 volumes:
   pgdata:
   edgeData:
+  backendData:
   influxData:
   influxConfig:
   grafanaStorage:
