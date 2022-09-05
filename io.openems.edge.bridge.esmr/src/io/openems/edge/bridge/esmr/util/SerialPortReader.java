@@ -51,15 +51,15 @@ public class SerialPortReader implements SerialPortEventListener, AutoCloseable 
 
     public boolean initConnection() {
         try {
-            CommPortIdentifier port = CommPortIdentifier.getPortIdentifier(portIdentifier);
-            this.serialPort = (SerialPort) port.open(this.getClass().getName(), timeOut);
-            serialPort.setSerialPortParams(baudRate, dataBits.getOldValue(), stopBits.getOldValue(), parity.getOldValue());
+            CommPortIdentifier port = CommPortIdentifier.getPortIdentifier(this.portIdentifier);
+            this.serialPort = (SerialPort) port.open(this.getClass().getName(), this.timeOut);
+            serialPort.setSerialPortParams(this.baudRate, this.dataBits.getOldValue(), this.stopBits.getOldValue(), this.parity.getOldValue());
 
             var inputStream = serialPort.getInputStream();
             this.reader = new ReadUTF8RecordStream(inputStream, "\r\n![0-9A-F]{4}\r\n");
 
-            serialPort.addEventListener(this);
-            serialPort.notifyOnDataAvailable(true);
+            this.serialPort.addEventListener(this);
+            this.serialPort.notifyOnDataAvailable(true);
 
             return true;
         } catch (Exception e) {
@@ -70,9 +70,9 @@ public class SerialPortReader implements SerialPortEventListener, AutoCloseable 
 
     @Override
     public synchronized void close() {
-        if (serialPort != null) {
-            serialPort.removeEventListener();
-            serialPort.close();
+        if (this.serialPort != null) {
+            this.serialPort.removeEventListener();
+            this.serialPort.close();
         }
     }
 
@@ -81,7 +81,7 @@ public class SerialPortReader implements SerialPortEventListener, AutoCloseable 
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
                 var response = this.reader.read();
-                for (Notifiable notifiable : notifiables) {
+                for (Notifiable notifiable : this.notifiables) {
                     notifiable.onEvent(response);
                 }
             } catch (Exception e) {

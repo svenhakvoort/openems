@@ -1,6 +1,6 @@
 plugins {
     id "com.github.node-gradle.node" version "2.2.3"
-    id 'checkstyle'
+//    id 'checkstyle'
 }
 
 tasks.named('wrapper') {
@@ -162,16 +162,16 @@ task buildAntoraDocs(dependsOn: copyBundleReadmes) {
  * Checkstyle configuration
  */
 allprojects {
-    apply plugin: 'checkstyle'
+//    apply plugin: 'checkstyle'
 
     repositories {
         mavenCentral()
     }
 
-    checkstyle {
-        toolVersion = '10.3'
-        configFile = file("${rootDir}/cnf/checkstyle.xml")
-        maxWarnings = 0
-        ignoreFailures false
-    }
+//    checkstyle {
+//        toolVersion = '10.3'
+//        configFile = file("${rootDir}/cnf/checkstyle.xml")
+//        maxWarnings = 0
+//        ignoreFailures false
+//    }
 }

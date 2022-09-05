@@ -70,7 +70,7 @@ public class BridgeEsmrImpl extends AbstractOpenemsComponent implements BridgeEs
 
 	@Override
 	public SerialPortReader getSerialPortReader() {
-		return serialPortReader;
+		return this.serialPortReader;
 	}
 
 	@Override
