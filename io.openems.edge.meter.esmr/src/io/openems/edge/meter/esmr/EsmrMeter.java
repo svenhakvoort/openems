@@ -60,6 +60,10 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
 
     @Override
     protected void addChannelDataRecords() {
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L1), telegram -> telegram.getPowerReceivedL1() - telegram.getPowerReturnedL1()));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L2), telegram -> telegram.getPowerReceivedL2() - telegram.getPowerReturnedL2()));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), telegram -> telegram.getPowerReceivedL3() - telegram.getPowerReturnedL3()));
+
         this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L1), DSMRTelegram::getPowerReceivedL1));
         this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L2), DSMRTelegram::getPowerReceivedL2));
         this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L3), DSMRTelegram::getPowerReceivedL3));

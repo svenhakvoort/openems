@@ -35,4 +35,6 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 	@AttributeDefinition(name = "Stop bits", description = "Serial Device stop bits")
 	StopBits stopBits() default StopBits.STOPBITS_1;
 
+	String webconsole_configurationFactory_nameHint() default "Bridge ESMR [{id}]";
+
 }

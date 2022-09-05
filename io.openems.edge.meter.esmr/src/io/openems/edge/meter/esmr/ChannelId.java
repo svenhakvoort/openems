@@ -6,9 +6,7 @@ import io.openems.edge.common.channel.Doc;
 
 public enum ChannelId implements io.openems.edge.common.channel.ChannelId {
     TOTAL_CONSUMED_ENERGY(Doc.of(OpenemsType.INTEGER) //
-            .unit(Unit.KILOWATT_HOURS)),
-    TEST(Doc.of(OpenemsType.STRING)
-            .unit(Unit.NONE))
+            .unit(Unit.KILOWATT_HOURS))
     ;
 
     private final Doc doc;
