@@ -44,6 +44,7 @@ public interface AsymmetricMeter extends SymmetricMeter {
 				.unit(Unit.WATT) //
 				.persistencePriority(PersistencePriority.HIGH) //
 				.text(POWER_DOC_TEXT)), //
+
 		/**
 		 * Active Power L2.
 		 *
@@ -76,6 +77,87 @@ public interface AsymmetricMeter extends SymmetricMeter {
 				.unit(Unit.WATT) //
 				.persistencePriority(PersistencePriority.HIGH) //
 				.text(POWER_DOC_TEXT)), //
+
+		/**
+		 * ConsumptionActivePowerL1
+		 *
+		 * <ul>
+		 * <li>Interface: Meter Asymmetric
+		 * <li>Type: Integer
+		 * <li>Unit: W
+		 * </ul>
+		 */
+		CONSUMPTION_ACTIVE_POWER_L1(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.persistencePriority(PersistencePriority.HIGH) //
+				.text(POWER_DOC_TEXT)), //
+		/**
+		 * ConsumptionActivePowerL2
+		 *
+		 * <ul>
+		 * <li>Interface: Meter Asymmetric
+		 * <li>Type: Integer
+		 * <li>Unit: W
+		 * </ul>
+		 */
+		CONSUMPTION_ACTIVE_POWER_L2(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.persistencePriority(PersistencePriority.HIGH) //
+				.text(POWER_DOC_TEXT)), //
+		/**
+		 * ConsumptionActivePowerL3
+		 *
+		 * <ul>
+		 * <li>Interface: Meter Asymmetric
+		 * <li>Type: Integer
+		 * <li>Unit: W
+		 * </ul>
+		 */
+		CONSUMPTION_ACTIVE_POWER_L3(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.persistencePriority(PersistencePriority.HIGH) //
+				.text(POWER_DOC_TEXT)), //
+
+		/**
+		 * ProductionActivePowerL1
+		 *
+		 * <ul>
+		 * <li>Interface: Meter Asymmetric
+		 * <li>Type: Integer
+		 * <li>Unit: W
+		 * </ul>
+		 */
+		PRODUCTION_ACTIVE_POWER_L1(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.persistencePriority(PersistencePriority.HIGH) //
+				.text(POWER_DOC_TEXT)), //
+		/**
+		 * ProductionActivePowerL2
+		 *
+		 * <ul>
+		 * <li>Interface: Meter Asymmetric
+		 * <li>Type: Integer
+		 * <li>Unit: W
+		 * </ul>
+		 */
+		PRODUCTION_ACTIVE_POWER_L2(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.persistencePriority(PersistencePriority.HIGH) //
+				.text(POWER_DOC_TEXT)), //
+		/**
+		 * ProductionActivePowerL3
+		 *
+		 * <ul>
+		 * <li>Interface: Meter Asymmetric
+		 * <li>Type: Integer
+		 * <li>Unit: W
+		 * </ul>
+		 */
+		PRODUCTION_ACTIVE_POWER_L3(Doc.of(OpenemsType.INTEGER) //
+				.unit(Unit.WATT) //
+				.persistencePriority(PersistencePriority.HIGH) //
+				.text(POWER_DOC_TEXT)), //
+
 		/**
 		 * Reactive Power L1.
 		 *

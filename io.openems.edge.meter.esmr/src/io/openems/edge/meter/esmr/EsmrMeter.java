@@ -1,12 +1,15 @@
 package io.openems.edge.meter.esmr;
 
+import io.openems.edge.bridge.esmr.api.AbstractOpenemsEsmrComponent;
 import io.openems.edge.bridge.esmr.api.BridgeEsmr;
+import io.openems.edge.bridge.esmr.api.ChannelRecord;
 import io.openems.edge.bridge.esmr.api.EsmrTask;
 import io.openems.edge.common.component.AbstractOpenemsComponent;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.meter.api.AsymmetricMeter;
 import io.openems.edge.meter.api.MeterType;
 import io.openems.edge.meter.api.SymmetricMeter;
+import nl.basjes.dsmr.DSMRTelegram;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.*;
@@ -18,7 +21,7 @@ import org.osgi.service.metatype.annotations.Designate;
         immediate = true,
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
-public class EsmrMeter extends AbstractOpenemsComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent {
+public class EsmrMeter extends AbstractOpenemsEsmrComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent {
 
     private MeterType meterType = MeterType.GRID;
 
@@ -56,19 +59,15 @@ public class EsmrMeter extends AbstractOpenemsComponent implements SymmetricMete
         return this.meterType;
     }
 
-//    @Override
-//    protected void addChannelDataRecords() {
-//        var channel1 = new ChannelRecord(this.channel(TEST), 0);
-//        channel1.getChannel().onSetNextValue(value -> System.out.println("GRIDMETER VALUE: " + value));
-//        this.channelDataRecordsList.add(channel1);
-//
-//        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L1), 1));
-//        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L2), 2));
-//        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 3));
-//        // TODO mapping seems to be wrong; L3 is repeated
-//        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 4));
-//        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 5));
-//        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), 6));
-//    }
+    @Override
+    protected void addChannelDataRecords() {
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L1), DSMRTelegram::getPowerReceivedL1));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L2), DSMRTelegram::getPowerReceivedL2));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L3), DSMRTelegram::getPowerReceivedL3));
+
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L1), DSMRTelegram::getPowerReturnedL1));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L2), DSMRTelegram::getPowerReturnedL2));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L3), DSMRTelegram::getPowerReturnedL3));
+    }
 
 }

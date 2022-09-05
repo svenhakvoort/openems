@@ -7,6 +7,7 @@ import io.openems.edge.bridge.esmr.util.SerialPortReader;
 import io.openems.edge.common.component.AbstractOpenemsComponent;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.event.EdgeEventConstants;
+import nl.basjes.dsmr.ParseDsmrTelegram;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Designate(ocd = Config.class, factory = true)
-@Component(name = "Bridge.Mbus", //
+@Component(name = "Bridge.ESMR", //
 		immediate = true, //
 		configurationPolicy = ConfigurationPolicy.REQUIRE, //
 		property = EventConstants.EVENT_TOPIC + "=" + EdgeEventConstants.TOPIC_CYCLE_EXECUTE_WRITE)
@@ -81,7 +82,8 @@ public class BridgeEsmrImpl extends AbstractOpenemsComponent implements BridgeEs
 	@Override
 	public void onEvent(String data) {
 		for (EsmrTask task : this.tasks.values()) {
-			task.setResponse(data);
+			var telegram = ParseDsmrTelegram.parse(data);
+			task.setResponse(telegram);
 		}
 	}
 
