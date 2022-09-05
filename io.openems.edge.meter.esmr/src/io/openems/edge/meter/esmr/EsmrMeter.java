@@ -60,17 +60,21 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
 
     @Override
     protected void addChannelDataRecords() {
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L1), telegram -> telegram.getPowerReceivedL1() - telegram.getPowerReturnedL1()));
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L2), telegram -> telegram.getPowerReceivedL2() - telegram.getPowerReturnedL2()));
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), telegram -> telegram.getPowerReceivedL3() - telegram.getPowerReturnedL3()));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L1), telegram -> kiloWattToWatt(telegram.getPowerReceivedL1() - telegram.getPowerReturnedL1())));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L2), telegram -> kiloWattToWatt(telegram.getPowerReceivedL2() - telegram.getPowerReturnedL2())));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.ACTIVE_POWER_L3), telegram -> kiloWattToWatt(telegram.getPowerReceivedL3() - telegram.getPowerReturnedL3())));
 
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L1), DSMRTelegram::getPowerReceivedL1));
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L2), DSMRTelegram::getPowerReceivedL2));
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L3), DSMRTelegram::getPowerReceivedL3));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L1), telegram -> kiloWattToWatt(telegram.getPowerReceivedL1())));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L2), telegram -> kiloWattToWatt(telegram.getPowerReceivedL2())));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.CONSUMPTION_ACTIVE_POWER_L3), telegram -> kiloWattToWatt(telegram.getPowerReceivedL3())));
 
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L1), DSMRTelegram::getPowerReturnedL1));
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L2), DSMRTelegram::getPowerReturnedL2));
-        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L3), DSMRTelegram::getPowerReturnedL3));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L1), telegram -> kiloWattToWatt(telegram.getPowerReturnedL1())));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L2), telegram -> kiloWattToWatt(telegram.getPowerReturnedL2())));
+        this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L3), telegram -> kiloWattToWatt(telegram.getPowerReturnedL3())));
+    }
+
+    private static int kiloWattToWatt(Double kiloWatt) {
+        return (int) (kiloWatt * 1000);
     }
 
 }
