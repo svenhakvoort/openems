@@ -322,6 +322,7 @@
 	io.openems.shared.influxdb;version=snapshot,\
 	io.openems.wrapper.eu.chargetime.ocpp;version=snapshot,\
 	io.openems.wrapper.fastexcel;version=snapshot,\
+	io.openems.wrapper.dsmr-parser;version=snapshot,\
 	io.openems.wrapper.gson;version=snapshot,\
 	io.openems.wrapper.influxdb-client-core;version=snapshot,\
 	io.openems.wrapper.influxdb-client-java;version=snapshot,\

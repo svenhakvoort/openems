@@ -1,0 +1,15 @@
+Bundle-Name: dsmr-parser
+Bundle-Description: DSMR parser
+Bundle-DocURL: https://github.com/nielsbasjes/dsmr-tools/blob/master/LICENSE
+Bundle-License: https://github.com/nielsbasjes/dsmr-tools/
+Bundle-Version: 0.6
+
+Include-Resource: @dsmr-parser-0.6.jar
+
+Export-Package: nl.basjes.dsmr
+
+-dsannotations: *
+
+-metatypeannotations: *
+
+-sources: false
