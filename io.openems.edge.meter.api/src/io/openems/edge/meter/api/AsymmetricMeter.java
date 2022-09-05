@@ -324,6 +324,18 @@ public interface AsymmetricMeter extends SymmetricMeter {
 		return this.channel(ChannelId.ACTIVE_POWER_L1);
 	}
 
+	public default IntegerReadChannel getProductionActivePowerL1() {
+		return this.channel(ChannelId.PRODUCTION_ACTIVE_POWER_L1);
+	}
+
+	public default IntegerReadChannel getProductionActivePowerL2() {
+		return this.channel(ChannelId.PRODUCTION_ACTIVE_POWER_L2);
+	}
+
+	public default IntegerReadChannel getProductionActivePowerL3() {
+		return this.channel(ChannelId.PRODUCTION_ACTIVE_POWER_L3);
+	}
+
 	/**
 	 * Gets the Active Power on L1 in [W]. Negative values for Consumption (power
 	 * that is 'leaving the system', e.g. feed-to-grid); positive for Production
