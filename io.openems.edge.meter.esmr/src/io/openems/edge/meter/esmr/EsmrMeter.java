@@ -32,19 +32,16 @@ import org.osgi.service.metatype.annotations.Designate;
 })
 public class EsmrMeter extends AbstractOpenemsEsmrComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent, TimedataProvider, EventHandler {
 
-    private MeterType meterType = MeterType.GRID;
-
-    @Reference(policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.OPTIONAL)
-    private volatile Timedata timedata = null;
-
+    private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
+    private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
     @Reference
     protected ConfigurationAdmin cm;
 
     @Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
     protected BridgeEsmr esmrBus;
-
-    private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
-    private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
+    private MeterType meterType = MeterType.GRID;
+    @Reference(policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.OPTIONAL)
+    private volatile Timedata timedata = null;
 
     public EsmrMeter() {
         super(
@@ -54,6 +51,10 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
                 io.openems.edge.meter.esmr.ChannelId.values()
         );
         AsymmetricMeter.initializePowerSumChannels(this);
+    }
+
+    private static int kiloWattToWatt(Double kiloWatt) {
+        return (int) (kiloWatt * 1000);
     }
 
     @Activate
@@ -90,10 +91,6 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
         this.channelDataRecordsList.add(new ChannelRecord(this.channel(AsymmetricMeter.ChannelId.PRODUCTION_ACTIVE_POWER_L3), telegram -> kiloWattToWatt(telegram.getPowerReturnedL3())));
     }
 
-    private static int kiloWattToWatt(Double kiloWatt) {
-        return (int) (kiloWatt * 1000);
-    }
-
     @Override
     public void handleEvent(Event event) {
         if (!this.isEnabled()) {
@@ -109,20 +106,24 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
     }
 
     private void calculateEnergy() {
-        // Calculate Energy
-        int activePowerL1 = this.getActivePowerL1().get();
-        int activePowerL2 = this.getActivePowerL2().get();
-        int activePowerL3 = this.getActivePowerL3().get();
+        try {
+            // Calculate Energy
+            int activePowerL1 = this.getActivePowerL1().get();
+            int activePowerL2 = this.getActivePowerL2().get();
+            int activePowerL3 = this.getActivePowerL3().get();
 
-        int activePower = activePowerL1 + activePowerL2 + activePowerL3;
-        if (activePower > 0) {
-            // Buy-From-Grid
-            this.calculateProductionEnergy.update(activePower);
-            this.calculateConsumptionEnergy.update(0);
-        } else {
-            // Sell-To-Grid
-            this.calculateProductionEnergy.update(0);
-            this.calculateConsumptionEnergy.update(activePower * -1);
+            int activePower = activePowerL1 + activePowerL2 + activePowerL3;
+            if (activePower > 0) {
+                // Buy-From-Grid
+                this.calculateProductionEnergy.update(activePower);
+                this.calculateConsumptionEnergy.update(0);
+            } else {
+                // Sell-To-Grid
+                this.calculateProductionEnergy.update(0);
+                this.calculateConsumptionEnergy.update(activePower * -1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
