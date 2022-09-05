@@ -37,6 +37,7 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
                 AsymmetricMeter.ChannelId.values(),
                 io.openems.edge.meter.esmr.ChannelId.values()
         );
+        AsymmetricMeter.initializePowerSumChannels(this);
     }
 
     @Activate

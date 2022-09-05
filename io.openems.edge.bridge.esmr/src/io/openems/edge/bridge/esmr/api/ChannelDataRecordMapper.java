@@ -23,7 +23,7 @@ public class ChannelDataRecordMapper {
 	private void mapDataToChannel(DSMRTelegram data, Function<DSMRTelegram, Object> dataCollector, Channel<?> channel) {
 		if (data != null) {
 			var collectedData = dataCollector.apply(data);
-			System.out.printf("Collected value %s with type %s and channel %s%n", collectedData, channel.getType(), channel.channelId().name());
+//			System.out.printf("Collected value %s with type %s and channel %s%n", collectedData, channel.getType(), channel.channelId().name());
 			channel.setNextValue(collectedData);
 		}
 	}
