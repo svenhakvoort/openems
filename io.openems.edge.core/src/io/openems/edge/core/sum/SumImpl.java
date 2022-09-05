@@ -243,6 +243,10 @@ public class SumImpl extends AbstractOpenemsComponent implements Sum, OpenemsCom
 						gridActivePowerL1.addValue(m.getActivePowerL1Channel());
 						gridActivePowerL2.addValue(m.getActivePowerL2Channel());
 						gridActivePowerL3.addValue(m.getActivePowerL3Channel());
+
+						productionAcActivePowerL1.addValue(m.getActivePowerL1Channel());
+						productionAcActivePowerL2.addValue(m.getActivePowerL2Channel());
+						productionAcActivePowerL3.addValue(m.getActivePowerL3Channel());
 					} else {
 						gridActivePowerL1.addValue(meter.getActivePowerChannel(), CalculateIntegerSum.DIVIDE_BY_THREE);
 						gridActivePowerL2.addValue(meter.getActivePowerChannel(), CalculateIntegerSum.DIVIDE_BY_THREE);

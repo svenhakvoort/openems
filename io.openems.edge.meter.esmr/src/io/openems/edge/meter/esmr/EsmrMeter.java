@@ -16,7 +16,7 @@ import org.osgi.service.metatype.annotations.Designate;
 
 @Designate(ocd = Config.class, factory = true)
 @Component(
-        name = "Meter.Sagemcom.ESMR",
+        name = "Meter.ESMR",
         immediate = true,
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )

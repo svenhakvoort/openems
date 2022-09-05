@@ -313,6 +313,8 @@ export class EdgeConfig {
             switch (component.factoryId) {
                 case 'GoodWe.EmergencyPowerMeter':
                     return true;
+                case 'Meter.ESMR':
+                  return true;
             }
         }
         return false;
