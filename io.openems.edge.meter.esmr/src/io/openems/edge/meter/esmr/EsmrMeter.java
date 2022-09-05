@@ -5,13 +5,18 @@ import io.openems.edge.bridge.esmr.api.BridgeEsmr;
 import io.openems.edge.bridge.esmr.api.ChannelRecord;
 import io.openems.edge.bridge.esmr.api.EsmrTask;
 import io.openems.edge.common.component.OpenemsComponent;
+import io.openems.edge.common.event.EdgeEventConstants;
 import io.openems.edge.meter.api.AsymmetricMeter;
 import io.openems.edge.meter.api.MeterType;
 import io.openems.edge.meter.api.SymmetricMeter;
-import nl.basjes.dsmr.DSMRTelegram;
+import io.openems.edge.timedata.api.Timedata;
+import io.openems.edge.timedata.api.TimedataProvider;
+import io.openems.edge.timedata.api.utils.CalculateEnergyFromPower;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.*;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 import org.osgi.service.metatype.annotations.Designate;
 
 @Designate(ocd = Config.class, factory = true)
@@ -20,15 +25,23 @@ import org.osgi.service.metatype.annotations.Designate;
         immediate = true,
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
-public class EsmrMeter extends AbstractOpenemsEsmrComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent {
+public class EsmrMeter extends AbstractOpenemsEsmrComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent, TimedataProvider, EventHandler {
 
     private MeterType meterType = MeterType.GRID;
+
+    @Reference(policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.OPTIONAL)
+    private volatile Timedata timedata = null;
 
     @Reference
     protected ConfigurationAdmin cm;
 
     @Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
     protected BridgeEsmr esmrBus;
+
+    private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this,
+            SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
+    private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this,
+            SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
 
     public EsmrMeter() {
         super(
@@ -76,6 +89,36 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
 
     private static int kiloWattToWatt(Double kiloWatt) {
         return (int) (kiloWatt * 1000);
+    }
+
+    @Override
+    public void handleEvent(Event event) {
+        if (EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE.equals(event.getTopic())) {
+            this.calculateEnergy();
+        }
+    }
+
+    private void calculateEnergy() {
+        // Calculate Energy
+        int activePowerL1 = this.getActivePowerL1().get();
+        int activePowerL2 = this.getActivePowerL2().get();
+        int activePowerL3 = this.getActivePowerL3().get();
+
+        int activePower = activePowerL1 + activePowerL2 + activePowerL3;
+        if (activePower > 0) {
+            // Buy-From-Grid
+            this.calculateProductionEnergy.update(activePower);
+            this.calculateConsumptionEnergy.update(0);
+        } else {
+            // Sell-To-Grid
+            this.calculateProductionEnergy.update(0);
+            this.calculateConsumptionEnergy.update(activePower * -1);
+        }
+    }
+
+    @Override
+    public Timedata getTimedata() {
+        return this.timedata;
     }
 
 }
