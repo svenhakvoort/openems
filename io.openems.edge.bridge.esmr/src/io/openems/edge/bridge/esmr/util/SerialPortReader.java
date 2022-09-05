@@ -5,6 +5,7 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class SerialPortReader implements SerialPortEventListener, AutoCloseable {
@@ -18,7 +19,7 @@ public class SerialPortReader implements SerialPortEventListener, AutoCloseable 
     private ReadUTF8RecordStream reader;
     private SerialPort serialPort;
 
-    private Collection<Notifiable> notifiables;
+    private final Collection<Notifiable> notifiables = new ArrayList<>();
 
     public SerialPortReader(String portIdentifier) {
         this.portIdentifier = portIdentifier;
