@@ -17,6 +17,7 @@ import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
+import org.osgi.service.event.propertytypes.EventTopics;
 import org.osgi.service.metatype.annotations.Designate;
 
 @Designate(ocd = Config.class, factory = true)
@@ -25,6 +26,10 @@ import org.osgi.service.metatype.annotations.Designate;
         immediate = true,
         configurationPolicy = ConfigurationPolicy.REQUIRE
 )
+@EventTopics({
+        EdgeEventConstants.TOPIC_CYCLE_BEFORE_PROCESS_IMAGE,
+        EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE
+})
 public class EsmrMeter extends AbstractOpenemsEsmrComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent, TimedataProvider, EventHandler {
 
     private MeterType meterType = MeterType.GRID;
@@ -93,8 +98,15 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
 
     @Override
     public void handleEvent(Event event) {
-        if (EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE.equals(event.getTopic())) {
-            this.calculateEnergy();
+        if (!this.isEnabled()) {
+            return;
+        }
+        switch (event.getTopic()) {
+            case EdgeEventConstants.TOPIC_CYCLE_BEFORE_PROCESS_IMAGE:
+                break;
+            case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
+                this.calculateEnergy();
+                break;
         }
     }
 
