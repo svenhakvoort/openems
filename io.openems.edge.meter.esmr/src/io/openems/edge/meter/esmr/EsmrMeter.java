@@ -43,10 +43,8 @@ public class EsmrMeter extends AbstractOpenemsEsmrComponent implements Symmetric
     @Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
     protected BridgeEsmr esmrBus;
 
-    private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this,
-            SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
-    private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this,
-            SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
+    private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
+    private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
 
     public EsmrMeter() {
         super(
