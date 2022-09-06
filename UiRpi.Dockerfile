@@ -34,7 +34,9 @@ RUN curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/packaging/releases
 
 WORKDIR /app
 
-COPY ui .
+COPY package*.json ./
 RUN npm install
+
+COPY ui .
 
 CMD ng serve -c openems-backend-prod --host 0.0.0.0 --disable-host-check
