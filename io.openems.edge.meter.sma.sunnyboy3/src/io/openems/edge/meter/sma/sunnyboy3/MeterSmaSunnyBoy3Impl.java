@@ -11,9 +11,13 @@ import io.openems.edge.bridge.modbus.api.element.UnsignedDoublewordElement;
 import io.openems.edge.bridge.modbus.api.element.UnsignedQuadruplewordElement;
 import io.openems.edge.bridge.modbus.api.task.FC3ReadRegistersTask;
 import io.openems.edge.common.component.OpenemsComponent;
+import io.openems.edge.common.event.EdgeEventConstants;
 import io.openems.edge.common.taskmanager.Priority;
 import io.openems.edge.meter.api.MeterType;
 import io.openems.edge.meter.api.SymmetricMeter;
+import io.openems.edge.timedata.api.Timedata;
+import io.openems.edge.timedata.api.TimedataProvider;
+import io.openems.edge.timedata.api.utils.CalculateEnergyFromPower;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Component;
@@ -24,6 +28,8 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 import org.osgi.service.metatype.annotations.Designate;
 
 @Designate(ocd = Config.class, factory = true)
@@ -32,7 +38,7 @@ import org.osgi.service.metatype.annotations.Designate;
 		immediate = true,
 		configurationPolicy = ConfigurationPolicy.REQUIRE
 )
-public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implements SymmetricMeter, ModbusComponent, OpenemsComponent {
+public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implements SymmetricMeter, ModbusComponent, OpenemsComponent, TimedataProvider, EventHandler {
 
 	private MeterType meterType = MeterType.PRODUCTION;
 
@@ -46,6 +52,12 @@ public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implem
 				SymmetricMeter.ChannelId.values()
 		);
 	}
+
+	@Reference(policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.OPTIONAL)
+	private volatile Timedata timedata = null;
+
+	private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
+	private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
 
 	@Override
 	@Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
@@ -77,6 +89,44 @@ public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implem
 				new FC3ReadRegistersTask(30775, Priority.HIGH, m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
 				new FC3ReadRegistersTask(30517, Priority.HIGH, m(SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY, new UnsignedQuadruplewordElement(30517)))
 		);
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		if (!this.isEnabled()) {
+			return;
+		}
+		switch (event.getTopic()) {
+			case EdgeEventConstants.TOPIC_CYCLE_BEFORE_PROCESS_IMAGE:
+				break;
+			case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
+				this.calculateEnergy();
+				break;
+		}
+	}
+
+	private void calculateEnergy() {
+		try {
+			// Calculate Energy
+			int activePower = this.getActivePower().get();
+
+			if (activePower > 0) {
+				// Buy-From-Grid
+				this.calculateProductionEnergy.update(activePower);
+				this.calculateConsumptionEnergy.update(0);
+			} else {
+				// Sell-To-Grid
+				this.calculateProductionEnergy.update(0);
+				this.calculateConsumptionEnergy.update(activePower * -1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public Timedata getTimedata() {
+		return this.timedata;
 	}
 
 	@Override

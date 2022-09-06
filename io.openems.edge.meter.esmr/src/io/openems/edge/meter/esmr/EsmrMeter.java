@@ -32,16 +32,19 @@ import org.osgi.service.metatype.annotations.Designate;
 })
 public class EsmrMeter extends AbstractOpenemsEsmrComponent implements SymmetricMeter, AsymmetricMeter, OpenemsComponent, TimedataProvider, EventHandler {
 
-    private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
-    private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
     @Reference
     protected ConfigurationAdmin cm;
 
     @Reference(policy = ReferencePolicy.STATIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.MANDATORY)
     protected BridgeEsmr esmrBus;
+
     private MeterType meterType = MeterType.GRID;
+
     @Reference(policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.OPTIONAL)
     private volatile Timedata timedata = null;
+
+    private final CalculateEnergyFromPower calculateProductionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY);
+    private final CalculateEnergyFromPower calculateConsumptionEnergy = new CalculateEnergyFromPower(this, SymmetricMeter.ChannelId.ACTIVE_CONSUMPTION_ENERGY);
 
     public EsmrMeter() {
         super(
