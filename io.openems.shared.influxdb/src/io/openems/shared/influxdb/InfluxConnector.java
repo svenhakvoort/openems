@@ -2,15 +2,12 @@ package io.openems.shared.influxdb;
 
 import java.net.URI;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +17,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import com.google.gson.JsonObject;
+import io.openems.common.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +118,7 @@ public class InfluxConnector {
 			 * This task merges single Points to Lists of Points, which are then sent to
 			 * InfluxDB. This approach improves speed as not every single Point gets sent
 			 * via HTTP individually.
-			 * 
+			 *
 			 * In theory the async implementation in the InfluxDB library would work also,
 			 * but it fails in production (without providing any error message/exception).
 			 */
@@ -331,13 +330,11 @@ public class InfluxConnector {
 				.append(", stop: ").append(toDate.toInstant()).append(")") //
 				.append("|> filter(fn: (r) => r._measurement == \"").append(MEASUREMENT).append("\")");
 
-		if (influxEdgeId.isPresent()) {
-			builder.append("|> filter(fn: (r) => r." + OpenemsOEM.INFLUXDB_TAG + " == \"" + influxEdgeId.get() + "\")");
-		}
+		influxEdgeId.ifPresent(integer -> builder.append("|> filter(fn: (r) => r." + OpenemsOEM.INFLUXDB_TAG + " == \"").append(integer).append("\")"));
 
 		builder //
 				.append("|> filter(fn : (r) => ") //
-				.append(InfluxConnector.toChannelAddressFieldList(channels).toString()) //
+				.append(InfluxConnector.toChannelAddressFieldList(channels)) //
 				.append(")")
 
 				.append("first = data |> first()") //
@@ -350,6 +347,26 @@ public class InfluxConnector {
 		var queryResult = this.executeQuery(query);
 
 		return InfluxConnector.convertHistoricEnergyResult(query, queryResult);
+	}
+
+	public static void main(String[] args) throws OpenemsNamedException {
+		var p = new JsonObject();
+		p.add("timezone", new JsonPrimitive("Europe/Amsterdam"));
+		p.add("fromDate", new JsonPrimitive("2022-09-06"));
+		p.add("toDate", new JsonPrimitive("2022-09-06"));
+
+		final ZoneId timezone;
+		var jTimezone = JsonUtils.getAsPrimitive(p, "timezone");
+		if (jTimezone.isNumber()) {
+			// For UI version before 2022.4.0
+			timezone = ZoneId.ofOffset("", ZoneOffset.ofTotalSeconds(JsonUtils.getAsInt(jTimezone) * -1));
+		} else {
+			timezone = TimeZone.getTimeZone(JsonUtils.getAsString(p, "timezone")).toZoneId();
+		}
+		var fromDate = JsonUtils.getAsZonedDateTime(p, "fromDate", timezone);
+		var toDate = JsonUtils.getAsZonedDateTime(p, "toDate", timezone).plusDays(1);
+		System.out.println(fromDate.toInstant());
+		System.out.println(toDate.toInstant());
 	}
 
 	/**
@@ -553,7 +570,7 @@ public class InfluxConnector {
 	private static Restrictions toChannelAddressFieldList(Set<ChannelAddress> channels) {
 		var restrictions = channels.stream() //
 				.map(channel -> Restrictions.field().equal(channel.toString())) //
-				.toArray(restriction -> new Restrictions[restriction]);
+				.toArray(Restrictions[]::new);
 
 		return Restrictions.or(restrictions);
 	}
