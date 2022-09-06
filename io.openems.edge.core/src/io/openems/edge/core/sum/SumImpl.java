@@ -232,7 +232,6 @@ public class SumImpl extends AbstractOpenemsComponent implements Sum, OpenemsCom
 					/*
 					 * Grid-Meter
 					 */
-					gridActivePower.addValue(meter.getActivePowerChannel());
 					gridMinActivePower.addValue(meter.getMinActivePowerChannel());
 					gridMaxActivePower.addValue(meter.getMaxActivePowerChannel());
 					gridBuyActiveEnergy.addValue(meter.getActiveProductionEnergyChannel());
@@ -244,10 +243,15 @@ public class SumImpl extends AbstractOpenemsComponent implements Sum, OpenemsCom
 						gridActivePowerL2.addValue(m.getActivePowerL2Channel());
 						gridActivePowerL3.addValue(m.getActivePowerL3Channel());
 
+						gridActivePower.addValue(m.getActivePowerL1Channel());
+						gridActivePower.addValue(m.getActivePowerL2Channel());
+						gridActivePower.addValue(m.getActivePowerL3Channel());
+
 						productionAcActivePowerL1.addValue(m.getProductionActivePowerL1());
 						productionAcActivePowerL2.addValue(m.getProductionActivePowerL2());
 						productionAcActivePowerL3.addValue(m.getProductionActivePowerL3());
 					} else {
+						gridActivePower.addValue(meter.getActivePowerChannel());
 						gridActivePowerL1.addValue(meter.getActivePowerChannel(), CalculateIntegerSum.DIVIDE_BY_THREE);
 						gridActivePowerL2.addValue(meter.getActivePowerChannel(), CalculateIntegerSum.DIVIDE_BY_THREE);
 						gridActivePowerL3.addValue(meter.getActivePowerChannel(), CalculateIntegerSum.DIVIDE_BY_THREE);
