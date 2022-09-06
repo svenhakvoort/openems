@@ -39,4 +39,4 @@ RUN npm install
 
 COPY ui .
 
-CMD ng serve -c openems-backend-prod --host 0.0.0.0 --disable-host-check
+CMD ng serve -c openems-backend-dev --host 0.0.0.0 --disable-host-check
