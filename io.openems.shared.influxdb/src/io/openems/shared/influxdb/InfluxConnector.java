@@ -345,6 +345,7 @@ public class InfluxConnector {
 
 		// Execute query
 		var queryResult = this.executeQuery(query);
+		System.out.println(query);
 
 		return InfluxConnector.convertHistoricEnergyResult(query, queryResult);
 	}
