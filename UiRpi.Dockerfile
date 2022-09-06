@@ -34,7 +34,7 @@ RUN curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/packaging/releases
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY ui/package*.json ./
 RUN npm install
 
 COPY ui .
