@@ -541,7 +541,11 @@ public class InfluxConnector {
 
 				var channelAddresss = ChannelAddress.fromString(record.getField());
 
-				map.put(channelAddresss, value);
+				if (value == JsonNull.INSTANCE) {
+					map.putIfAbsent(channelAddresss, value);
+				} else {
+					map.put(channelAddresss, value);
+				}
 			}
 		}
 
