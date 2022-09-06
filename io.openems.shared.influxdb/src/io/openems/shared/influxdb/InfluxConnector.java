@@ -336,6 +336,7 @@ public class InfluxConnector {
 				.append("|> filter(fn : (r) => ") //
 				.append(InfluxConnector.toChannelAddressFieldList(channels)) //
 				.append(")")
+				.append("|> sort(columns: [\"_time\"])")
 
 				.append("first = data |> first()") //
 				.append("last = data |> last()") //
