@@ -38,7 +38,7 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements E
     public WeatherCloudConnector() {
         super(
                 OpenemsComponent.ChannelId.values(),
-                ChannelId.values()
+                io.openems.edge.controller.weathercloud.ChannelId.values()
         );
     }
 
