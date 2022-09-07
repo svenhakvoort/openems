@@ -8,13 +8,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
@@ -418,6 +412,33 @@ public class InfluxConnector {
 		var queryResult = this.executeQuery(flux);
 
 		return InfluxConnector.convertHistoricDataQueryResult(queryResult, fromDate, resolution);
+	}
+
+	public Optional<Object> getLatestValue(ChannelAddress channelAddress) throws OpenemsException {
+		// handle empty call
+		if (channelAddress == null) {
+			return Optional.empty();
+		}
+
+		// prepare query
+		Flux flux = Flux.from(this.bucket) //
+				.range(Instant.now().minus(1, ChronoUnit.DAYS), Instant.now()) //
+				.filter(Restrictions.measurement().equal(MEASUREMENT));
+
+		flux = flux.filter(InfluxConnector.toChannelAddressFieldList(Set.of(channelAddress))) //
+				.sort(List.of("_time"))
+				.last();
+
+		// Execute query
+		var queryResult = this.executeQuery(flux);
+
+		for (FluxTable fluxTable : queryResult) {
+			for (FluxRecord record : fluxTable.getRecords()) {
+				var value = record.getValue();
+				if (value != null) return Optional.of(value);
+			}
+		}
+		return Optional.empty();
 	}
 
 	/**

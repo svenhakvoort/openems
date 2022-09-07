@@ -83,7 +83,7 @@ public class Shelly25Impl extends AbstractOpenemsComponent
 			} else {
 				valueText = "?";
 			}
-			b.append(i + valueText);
+			b.append(i).append(valueText);
 
 			// add space for all but the last
 			if (++i <= this.digitalOutputChannels.length) {
@@ -153,7 +153,7 @@ public class Shelly25Impl extends AbstractOpenemsComponent
 	private void executeWrite(BooleanWriteChannel channel, int index) throws OpenemsNamedException {
 		var readValue = channel.value().get();
 		var writeValue = channel.getNextWriteValueAndReset();
-		if (!writeValue.isPresent()) {
+		if (writeValue.isEmpty()) {
 			// no write value
 			return;
 		}
