@@ -30,6 +30,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
+import org.osgi.service.event.propertytypes.EventTopics;
 import org.osgi.service.metatype.annotations.Designate;
 
 @Designate(ocd = Config.class, factory = true)
@@ -38,6 +39,10 @@ import org.osgi.service.metatype.annotations.Designate;
 		immediate = true,
 		configurationPolicy = ConfigurationPolicy.REQUIRE
 )
+@EventTopics({
+		EdgeEventConstants.TOPIC_CYCLE_BEFORE_PROCESS_IMAGE,
+		EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE
+})
 public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implements SymmetricMeter, ModbusComponent, OpenemsComponent, TimedataProvider, EventHandler {
 
 	private MeterType meterType = MeterType.PRODUCTION;
