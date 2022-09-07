@@ -7,11 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.*;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.osgi.service.event.propertytypes.EventTopics;
@@ -54,7 +50,7 @@ public class UiWebsocketImpl extends AbstractOpenemsBackendComponent implements 
 	@Reference
 	protected volatile Metadata metadata;
 
-	@Reference
+	@Reference(cardinality = ReferenceCardinality.OPTIONAL)
 	protected volatile EdgeWebsocket edgeWebsocket;
 
 	@Reference
