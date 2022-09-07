@@ -1,0 +1,4 @@
+= Weathercloud controller
+
+https://github.com/OpenEMS/openems/tree/develop/io.openems.edge.controller.weathercloud[Source Code icon:github[]]
+

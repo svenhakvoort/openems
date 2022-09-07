@@ -140,6 +140,11 @@ public enum Unit {
 	KILOWATT_HOURS("kWh", WATT_HOURS, 3),
 
 	/**
+	 * Unit of sun intensity per square meter [W/m2]
+	 */
+	WATT_HOURS_BY_SQUARE_METER("W/m²"),
+
+	/**
 	 * Unit of Reactive Energy [varh].
 	 */
 	VOLT_AMPERE_REACTIVE_HOURS("varh"),
