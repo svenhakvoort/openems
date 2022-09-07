@@ -86,8 +86,7 @@ public class MeterSmaSunnyBoy3Impl extends AbstractOpenemsModbusComponent implem
 	@Override
 	protected ModbusProtocol defineModbusProtocol() throws OpenemsException {
 		return new ModbusProtocol(this,
-				new FC3ReadRegistersTask(30775, Priority.HIGH, m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775))),
-				new FC3ReadRegistersTask(30517, Priority.HIGH, m(SymmetricMeter.ChannelId.ACTIVE_PRODUCTION_ENERGY, new UnsignedQuadruplewordElement(30517)))
+				new FC3ReadRegistersTask(30775, Priority.HIGH, m(SymmetricMeter.ChannelId.ACTIVE_POWER, new SignedDoublewordElement(30775)))
 		);
 	}
 
