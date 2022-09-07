@@ -151,7 +151,7 @@ public class CalculateEnergyFromPower {
 						this.state = State.CALCULATE_ENERGY_OPERATION;
 
 						if (cumulatedEnergyOpt.isPresent()) {
-							System.out.println("Initialized calculated energy from timedata: " + cumulatedEnergyOpt.get());
+							System.out.printf("Initialized calculated energy %s from timedata: %s%n", this.channelId.id(), cumulatedEnergyOpt.get());
 							try {
 								this.baseCumulatedEnergy = TypeUtils.getAsType(OpenemsType.LONG,
 										cumulatedEnergyOpt.get());
