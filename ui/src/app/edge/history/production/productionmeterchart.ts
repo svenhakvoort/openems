@@ -135,6 +135,7 @@ export class ProductionMeterChartComponent extends AbstractHistoryChart implemen
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL1'),
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL2'),
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL3'),
+                new ChannelAddress('weatherCloud0', 'SunIntensity'),
             ];
             resolve(result);
         })
