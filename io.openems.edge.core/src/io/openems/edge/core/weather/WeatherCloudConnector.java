@@ -71,10 +71,10 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
             }
 
             String stringResponse = response.body().string();
-            System.out.println("Got response: " + stringResponse);
+
             var parsedResponse = JsonUtils.parseToJsonObject(stringResponse);
             var sunIntensity = parsedResponse.get("solarrad").getAsFloat();
-            System.out.println("Got solarrad value: " + sunIntensity);
+
             this.channel(SUN_INTENSITY).setNextValue(sunIntensity);
         } catch (IOException | OpenemsError.OpenemsNamedException e) {
             e.printStackTrace();

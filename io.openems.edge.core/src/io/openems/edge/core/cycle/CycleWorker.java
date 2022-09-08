@@ -2,6 +2,7 @@ package io.openems.edge.core.cycle;
 
 import java.util.concurrent.TimeUnit;
 
+import io.openems.edge.common.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,26 +56,20 @@ public class CycleWorker extends AbstractWorker {
 			this.parent.componentManager.getEnabledComponents().stream() //
 					.filter(c -> c.isEnabled() && !(c instanceof Sum)) //
 					.forEach(component -> {
-						component.channels().forEach(channel -> {
-							channel.nextProcessImage();
-						});
+						component.channels().forEach(Channel::nextProcessImage);
 					});
-			this.parent.channels().forEach(channel -> {
-				channel.nextProcessImage();
-			});
+			this.parent.channels().forEach(Channel::nextProcessImage);
 
 			/*
 			 * Update the Channels in the Sum-Component.
 			 */
 			this.parent.sumComponent.updateChannelsBeforeProcessImage();
-			this.parent.sumComponent.channels().forEach(channel -> {
-				channel.nextProcessImage();
-			});
+			this.parent.sumComponent.channels().forEach(Channel::nextProcessImage);
 
-			this.parent.weatherComponent.updateChannelsBeforeProcessImage();
-			this.parent.weatherComponent.channels().forEach(channel -> {
-				channel.nextProcessImage();
-			});
+			if (this.parent.weatherComponent.isEnabled()) {
+				this.parent.weatherComponent.updateChannelsBeforeProcessImage();
+				this.parent.weatherComponent.channels().forEach(Channel::nextProcessImage);
+			}
 
 			/*
 			 * Trigger AFTER_PROCESS_IMAGE event
