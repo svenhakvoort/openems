@@ -118,7 +118,7 @@ export class SolarIntensityChart extends AbstractHistoryChart implements OnInit,
     options.tooltips.callbacks.label = function (tooltipItem: TooltipItem, data: Data) {
       let label = data.datasets[tooltipItem.datasetIndex].label;
       let value = tooltipItem.yLabel;
-      return label + ": " + formatNumber(value, 'de', '1.0-2') + " W/m2a";
+      return label + ": " + formatNumber(value, 'de', '1.0-2') + " W/m2";
     }
     this.options = options;
   }
