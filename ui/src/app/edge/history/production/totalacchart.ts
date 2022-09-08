@@ -58,7 +58,9 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
                     let datasets = [];
                     this.getChannelAddresses(edge, config).then(channelAddresses => {
                         channelAddresses.forEach(channelAddress => {
-                            let data = result.data[channelAddress.toString()].map(value => {
+                            const dataFromChannel = result.data[channelAddress.toString()];
+
+                            let data = dataFromChannel?.map(value => {
                                 if (value == null) {
                                     return null
                                 } else {
