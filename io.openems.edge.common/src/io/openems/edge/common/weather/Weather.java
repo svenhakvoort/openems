@@ -1,6 +1,7 @@
 package io.openems.edge.common.weather;
 
 import io.openems.common.channel.AccessMode;
+import io.openems.common.channel.PersistencePriority;
 import io.openems.common.channel.Unit;
 import io.openems.common.types.OpenemsType;
 import io.openems.edge.common.channel.Doc;
@@ -18,6 +19,7 @@ public interface Weather extends OpenemsComponent {
                 Doc.of(OpenemsType.FLOAT) //
                         .unit(Unit.WATT_HOURS_BY_SQUARE_METER)
                         .accessMode(AccessMode.READ_WRITE)
+                        .persistencePriority(PersistencePriority.HIGH)
         );
 
         private final Doc doc;
