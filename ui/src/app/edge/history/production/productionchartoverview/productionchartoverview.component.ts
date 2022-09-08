@@ -17,6 +17,7 @@ export class ProductionChartOverviewComponent {
     public chargerComponents: EdgeConfig.Component[] = null;
     public showTotal: boolean = null;
     public showPhases: boolean = false;
+    public showSunIntensity: boolean = false;
     public isOnlyChart: boolean = null;
 
     // reference to the Utils method to access via html
@@ -54,6 +55,10 @@ export class ProductionChartOverviewComponent {
 
     onNotifyPhases(showPhases: boolean): void {
         this.showPhases = showPhases;
+    }
+
+    onNotifySunIntensity(showSolarRadiation: boolean): void {
+      this.showSunIntensity = showSolarRadiation;
     }
 
     onNotifyTotal(showTotal: boolean): void {

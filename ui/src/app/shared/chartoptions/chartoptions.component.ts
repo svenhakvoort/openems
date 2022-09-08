@@ -12,8 +12,10 @@ export class ChartOptionsComponent {
 
     @Input() public showPhases: boolean;
     @Input() public showTotal: boolean;
+    @Input() public showSunIntensity: boolean;
     @Output() setShowPhases = new EventEmitter<boolean>();
     @Output() setShowTotal = new EventEmitter<boolean>();
+    @Output() setShowSunIntensity = new EventEmitter<boolean>();
 
     constructor(
         public service: Service,
@@ -28,7 +30,8 @@ export class ChartOptionsComponent {
             translucent: false,
             componentProps: {
                 showPhases: this.showPhases,
-                showTotal: this.showTotal
+                showTotal: this.showTotal,
+                showSunIntensity: this.showSunIntensity
             }
         });
         await popover.present();
@@ -43,6 +46,12 @@ export class ChartOptionsComponent {
             } else if (data['role'] == "Total" && data['data'] == false) {
                 this.setShowTotal.emit(false);
             }
+
+          if (data['role'] == "SunIntensity" && data['data'] == true) {
+            this.setShowTotal.emit(true);
+          } else if (data['role'] == "SunIntensity" && data['data'] == false) {
+            this.setShowTotal.emit(false);
+          }
         });
         await popover.present();
     }

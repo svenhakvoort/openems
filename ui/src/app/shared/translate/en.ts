@@ -4,6 +4,7 @@ export const TRANSLATION = {
         actualPower: 'e-car Charge power',
         apply: 'Apply',
         autarchy: 'Autarchy',
+        sunIntensity: 'Sun Intensity',
         automatic: 'Automatically',
         cancel: 'cancel',
         capacity: 'Capacity',

@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class ChartOptionsPopoverComponent {
 
     @Input() public showPhases: boolean;
+    @Input() public showSunIntensity: boolean;
     @Input() public showTotal: boolean;
 
     constructor(
@@ -25,6 +26,15 @@ export class ChartOptionsPopoverComponent {
             this.showPhases = true;
         }
         this.popoverCtrl.dismiss(this.showPhases, 'Phases');
+    }
+
+    public setSunIntensity() {
+      if (this.showSunIntensity == true) {
+        this.showSunIntensity = false;
+      } else if (this.showSunIntensity == false) {
+        this.showSunIntensity = true;
+      }
+      this.popoverCtrl.dismiss(this.showSunIntensity, 'SunIntensity');
     }
 
     public setTotal() {

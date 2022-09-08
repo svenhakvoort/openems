@@ -68,6 +68,27 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements E
         }
     }
 
+    public static void main(String[] args) {
+        var client = new OkHttpClient();
+        var request = new Request.Builder()
+                .url(WEATHER_CLOUD_BASE_URL + "/device/values?code=" + "0096876745")
+                .header("X-Requested-With", "XMLHttpRequest")
+                .build();
+        try (var response = client.newCall(request).execute()) {
+
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+
+            String stringResponse = response.body().string();
+            var parsedResponse = JsonUtils.parseToJsonObject(stringResponse);
+            var sunIntensity = parsedResponse.get("solarrad").getAsFloat();
+            System.out.println(sunIntensity);
+        } catch (IOException | OpenemsError.OpenemsNamedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void querySunIntensity() {
         var client = new OkHttpClient();
         var request = new Request.Builder()
@@ -81,8 +102,10 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements E
             }
 
             String stringResponse = response.body().string();
+            System.out.println("Got response: " + stringResponse);
             var parsedResponse = JsonUtils.parseToJsonObject(stringResponse);
             var sunIntensity = parsedResponse.get("solarrad").getAsFloat();
+            System.out.println("Got solarrad value: " + sunIntensity);
             this.channel(io.openems.edge.controller.weathercloud.ChannelId.SUN_INTENSITY).setNextValue(sunIntensity);
         } catch (IOException | OpenemsError.OpenemsNamedException e) {
             e.printStackTrace();

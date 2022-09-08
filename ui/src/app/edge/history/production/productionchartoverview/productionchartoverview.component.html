@@ -5,7 +5,9 @@
             <ng-container *ngIf="showTotal != null || showPhases != null">
                 <ion-buttons slot="start">
                     <chartOptions (setShowTotal)='onNotifyTotal($event)' (setShowPhases)='onNotifyPhases($event)'
-                        [showTotal]="showTotal" [showPhases]="showPhases"></chartOptions>
+                                  (setShowSunIntensity)='onNotifySunIntensity($event)'
+                                  [showTotal]="showTotal" [showPhases]="showPhases"
+                                  [showSunIntensity]="showSunIntensity"></chartOptions>
                 </ion-buttons>
             </ng-container>
             <ion-buttons slot="end">
@@ -28,7 +30,7 @@
                         <td style="width: 100%" class="ion-padding" translate>General.total</td>
                     </tr>
                 </table>
-                <productionTotalChart [showPhases]="showPhases" [period]="service.historyPeriod"></productionTotalChart>
+                <productionTotalChart [showSunIntensity]="showSunIntensity" [showPhases]="showPhases" [period]="service.historyPeriod"></productionTotalChart>
             </ion-card-content>
         </ng-container>
         <ng-container *ngIf="!showTotal">
