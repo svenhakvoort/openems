@@ -146,6 +146,7 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL1'),
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL2'),
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL3'),
+                new ChannelAddress('_weather', 'SunIntensity')
             ];
             resolve(result);
         })

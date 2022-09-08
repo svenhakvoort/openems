@@ -219,6 +219,7 @@ export class ProductionTotalChartComponent extends AbstractHistoryChart implemen
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL1'),
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL2'),
                 new ChannelAddress('_sum', 'ProductionAcActivePowerL3'),
+                new ChannelAddress('_weather', 'SunIntensity')
             ];
             config.getComponentsImplementingNature("io.openems.edge.meter.api.SymmetricMeter").filter(component => config.isProducer(component)).forEach(productionMeter => {
                 result.push(new ChannelAddress(productionMeter.id, 'ActivePower'))
