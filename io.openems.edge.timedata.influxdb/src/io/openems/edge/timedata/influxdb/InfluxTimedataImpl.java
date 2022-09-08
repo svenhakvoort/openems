@@ -107,7 +107,10 @@ public class InfluxTimedataImpl extends AbstractOpenemsComponent
             final var point = Point.measurement(InfluxConnector.MEASUREMENT).time(timestamp, WritePrecision.MS);
             final var addedAtLeastOneChannelValue = new AtomicBoolean(false);
 
-            this.componentManager.getEnabledComponents().stream().filter(OpenemsComponent::isEnabled)
+            this.componentManager.getEnabledComponents().stream()
+                    .peek(component -> System.out.println("Found component: " + component.alias()))
+                    .filter(OpenemsComponent::isEnabled)
+                    .peek(component -> System.out.println("Found enabled component: " + component.alias()))
                     .forEach(component -> {
                         component.channels().forEach(channel -> {
                             switch (channel.channelDoc().getAccessMode()) {
@@ -125,6 +128,8 @@ public class InfluxTimedataImpl extends AbstractOpenemsComponent
                                 return;
                             }
                             Object value = valueOpt.get();
+                            System.out.println("Found channel " + channel.channelId().name() + " for component: " + component.alias() + " with value " + value);
+
                             var address = channel.address().toString();
                             try {
                                 switch (channel.getType()) {
@@ -197,8 +202,8 @@ public class InfluxTimedataImpl extends AbstractOpenemsComponent
             return CompletableFuture.completedFuture(this.influxConnector.getLatestValue(channelAddress));
         } catch (Exception e) {
             e.printStackTrace();
-			return CompletableFuture.failedFuture(e);
-		}
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
 }
