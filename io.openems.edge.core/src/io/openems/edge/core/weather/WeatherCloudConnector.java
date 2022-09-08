@@ -47,7 +47,7 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
 
     @Activate
     void activate(ComponentContext context, Config config) {
-        super.activate(context, SINGLETON_COMPONENT_ID, "", !Objects.equals(config.weatherCloudStation(), ""));
+        super.activate(context, SINGLETON_COMPONENT_ID, SINGLETON_SERVICE_PID, !Objects.equals(config.weatherCloudStation(), ""));
         this.stationId = config.weatherCloudStation();
     }
 
