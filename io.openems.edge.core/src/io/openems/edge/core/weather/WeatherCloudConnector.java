@@ -5,6 +5,7 @@ import io.openems.common.utils.JsonUtils;
 import io.openems.edge.common.component.AbstractOpenemsComponent;
 import io.openems.edge.common.component.OpenemsComponent;
 import io.openems.edge.common.weather.Weather;
+import io.openems.edge.timedata.api.Timedata;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -29,6 +30,9 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
     @Reference
     protected ConfigurationAdmin cm;
     private String stationId;
+
+    @Reference(policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY, cardinality = ReferenceCardinality.OPTIONAL)
+    protected volatile Timedata timedata = null;
 
     public WeatherCloudConnector() {
         super(
