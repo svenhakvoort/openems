@@ -48,9 +48,9 @@ export class ChartOptionsComponent {
             }
 
             if (data['role'] == "SunIntensity" && data['data'] == true) {
-              this.setShowTotal.emit(true);
+              this.setShowSunIntensity.emit(true);
             } else if (data['role'] == "SunIntensity" && data['data'] == false) {
-              this.setShowTotal.emit(false);
+              this.setShowSunIntensity.emit(false);
             }
         });
         await popover.present();
