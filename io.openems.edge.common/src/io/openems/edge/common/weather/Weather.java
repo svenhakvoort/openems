@@ -1,5 +1,6 @@
 package io.openems.edge.common.weather;
 
+import io.openems.common.channel.AccessMode;
 import io.openems.common.channel.Unit;
 import io.openems.common.types.OpenemsType;
 import io.openems.edge.common.channel.Doc;
@@ -13,9 +14,11 @@ public interface Weather extends OpenemsComponent {
     void updateChannelsBeforeProcessImage();
 
     public enum ChannelId implements io.openems.edge.common.channel.ChannelId {
-        SUN_INTENSITY(Doc.of(OpenemsType.FLOAT) //
-                .unit(Unit.WATT_HOURS_BY_SQUARE_METER))
-        ;
+        SUN_INTENSITY(
+                Doc.of(OpenemsType.FLOAT) //
+                        .unit(Unit.WATT_HOURS_BY_SQUARE_METER)
+                        .accessMode(AccessMode.READ_WRITE)
+        );
 
         private final Doc doc;
 
