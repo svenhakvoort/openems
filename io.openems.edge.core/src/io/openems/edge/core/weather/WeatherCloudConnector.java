@@ -4,15 +4,12 @@ import io.openems.common.exceptions.OpenemsError;
 import io.openems.common.utils.JsonUtils;
 import io.openems.edge.common.component.AbstractOpenemsComponent;
 import io.openems.edge.common.component.OpenemsComponent;
-import io.openems.edge.common.event.EdgeEventConstants;
 import io.openems.edge.common.weather.Weather;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.*;
-import org.osgi.service.event.Event;
-import org.osgi.service.event.propertytypes.EventTopics;
 import org.osgi.service.metatype.annotations.Designate;
 
 import java.io.IOException;
@@ -20,16 +17,11 @@ import java.util.Objects;
 
 import static io.openems.edge.common.weather.Weather.ChannelId.SUN_INTENSITY;
 
-@Designate(ocd = Config.class, factory = true)
+@Designate(ocd = Config.class, factory = false)
 @Component(
-        name = "Core.Weather",
-        immediate = true,
-        configurationPolicy = ConfigurationPolicy.REQUIRE
+        name = Weather.SINGLETON_SERVICE_PID,
+        immediate = true
 )
-@EventTopics({
-        EdgeEventConstants.TOPIC_CYCLE_BEFORE_PROCESS_IMAGE,
-        EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE
-})
 public class WeatherCloudConnector extends AbstractOpenemsComponent implements Weather {
 
     private static final String WEATHER_CLOUD_BASE_URL = "https://app.weathercloud.net";
@@ -46,8 +38,17 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
     }
 
     @Activate
-    void activate(ComponentContext context, Config config) {
+    private void activate(ComponentContext context, Config config) {
         super.activate(context, SINGLETON_COMPONENT_ID, SINGLETON_SERVICE_PID, !Objects.equals(config.weatherCloudStation(), ""));
+        if (OpenemsComponent.validateSingleton(this.cm, SINGLETON_SERVICE_PID, SINGLETON_COMPONENT_ID)) {
+            return;
+        }
+        this.stationId = config.weatherCloudStation();
+    }
+
+    @Modified
+    private void modified(ComponentContext context, Config config) {
+        super.modified(context, SINGLETON_COMPONENT_ID, SINGLETON_SERVICE_PID, !Objects.equals(config.weatherCloudStation(), ""));
         this.stationId = config.weatherCloudStation();
     }
 
@@ -55,20 +56,6 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
     @Deactivate
     protected void deactivate() {
         super.deactivate();
-    }
-
-    @Override
-    public void handleEvent(Event event) {
-        if (!this.isEnabled()) {
-            return;
-        }
-        switch (event.getTopic()) {
-            case EdgeEventConstants.TOPIC_CYCLE_BEFORE_PROCESS_IMAGE:
-                break;
-            case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
-                this.querySunIntensity();
-                break;
-        }
     }
 
     private void querySunIntensity() {
@@ -92,6 +79,11 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
         } catch (IOException | OpenemsError.OpenemsNamedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateChannelsBeforeProcessImage() {
+        this.querySunIntensity();
     }
 
 }

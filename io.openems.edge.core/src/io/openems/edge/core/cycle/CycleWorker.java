@@ -71,6 +71,11 @@ public class CycleWorker extends AbstractWorker {
 				channel.nextProcessImage();
 			});
 
+			this.parent.weatherComponent.updateChannelsBeforeProcessImage();
+			this.parent.weatherComponent.channels().forEach(channel -> {
+				channel.nextProcessImage();
+			});
+
 			/*
 			 * Trigger AFTER_PROCESS_IMAGE event
 			 */

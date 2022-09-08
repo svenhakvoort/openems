@@ -19,7 +19,7 @@ public class DummyWeather extends AbstractOpenemsComponent implements Weather, O
 	}
 
 	@Override
-	public void handleEvent(Event event) {
+	public void updateChannelsBeforeProcessImage() {
 		// nothing here
 	}
 

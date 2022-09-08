@@ -3,6 +3,7 @@ package io.openems.edge.core.cycle;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+import io.openems.edge.common.weather.Weather;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -47,6 +48,9 @@ public class CycleImpl extends AbstractOpenemsComponent implements OpenemsCompon
 
 	@Reference
 	protected Sum sumComponent;
+
+	@Reference
+	protected Weather weatherComponent;
 
 	@Reference
 	protected ComponentManager componentManager;
