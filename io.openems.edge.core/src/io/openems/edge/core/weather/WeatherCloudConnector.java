@@ -80,6 +80,7 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
             var sunIntensity = parsedResponse.get("solarrad").getAsFloat();
 
             this.channel(SUN_INTENSITY).setNextValue(sunIntensity);
+            System.out.println("Set channel SUN_INTENSITY value to: " + sunIntensity);
         } catch (IOException | OpenemsError.OpenemsNamedException e) {
             e.printStackTrace();
         }

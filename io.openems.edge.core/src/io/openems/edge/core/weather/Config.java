@@ -4,7 +4,7 @@ import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 @ObjectClassDefinition(name = "Core Weather", //
-		description = "Implements the Weather data")
+		description = "Implements weather data")
 @interface Config {
 
 	@AttributeDefinition(name = "Station-ID", description = "ID of weathercloud Station to track (without the letter 'd' prefix)")
