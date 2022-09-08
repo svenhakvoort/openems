@@ -46,7 +46,7 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
 
     @Activate
     private void activate(ComponentContext context, Config config) {
-        super.activate(context, SINGLETON_COMPONENT_ID, SINGLETON_SERVICE_PID, !Objects.equals(config.weatherCloudStation(), ""));
+        super.activate(context, SINGLETON_COMPONENT_ID, SINGLETON_SERVICE_PID, true);
         if (OpenemsComponent.validateSingleton(this.cm, SINGLETON_SERVICE_PID, SINGLETON_COMPONENT_ID)) {
             return;
         }
@@ -55,7 +55,7 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
 
     @Modified
     private void modified(ComponentContext context, Config config) {
-        super.modified(context, SINGLETON_COMPONENT_ID, SINGLETON_SERVICE_PID, !Objects.equals(config.weatherCloudStation(), ""));
+        super.modified(context, SINGLETON_COMPONENT_ID, SINGLETON_SERVICE_PID, true);
         this.stationId = config.weatherCloudStation();
     }
 
@@ -66,7 +66,7 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
     }
 
     private void querySunIntensity() {
-        if (this.isEnabled()) {
+        if (this.isEnabled() && !Objects.equals(this.stationId, "")) {
             var client = new OkHttpClient();
             var request = new Request.Builder()
                     .url(WEATHER_CLOUD_BASE_URL + "/device/values?code=" + this.stationId)
