@@ -21,7 +21,10 @@ import static io.openems.edge.common.weather.Weather.ChannelId.SUN_INTENSITY;
 @Designate(ocd = Config.class, factory = false)
 @Component(
         name = Weather.SINGLETON_SERVICE_PID,
-        immediate = true
+        immediate = true,
+        property = {
+                "enabled=true"
+        }
 )
 public class WeatherCloudConnector extends AbstractOpenemsComponent implements Weather {
 
@@ -63,26 +66,27 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements W
     }
 
     private void querySunIntensity() {
-        var client = new OkHttpClient();
-        var request = new Request.Builder()
-                .url(WEATHER_CLOUD_BASE_URL + "/device/values?code=" + this.stationId)
-                .header("X-Requested-With", "XMLHttpRequest")
-                .build();
-        try (var response = client.newCall(request).execute()) {
+        if (this.isEnabled()) {
+            var client = new OkHttpClient();
+            var request = new Request.Builder()
+                    .url(WEATHER_CLOUD_BASE_URL + "/device/values?code=" + this.stationId)
+                    .header("X-Requested-With", "XMLHttpRequest")
+                    .build();
+            try (var response = client.newCall(request).execute()) {
 
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
+
+                String stringResponse = response.body().string();
+
+                var parsedResponse = JsonUtils.parseToJsonObject(stringResponse);
+                var sunIntensity = parsedResponse.get("solarrad").getAsFloat();
+
+                this.channel(SUN_INTENSITY).setNextValue(sunIntensity);
+            } catch (IOException | OpenemsError.OpenemsNamedException e) {
+                e.printStackTrace();
             }
-
-            String stringResponse = response.body().string();
-
-            var parsedResponse = JsonUtils.parseToJsonObject(stringResponse);
-            var sunIntensity = parsedResponse.get("solarrad").getAsFloat();
-
-            this.channel(SUN_INTENSITY).setNextValue(sunIntensity);
-            System.out.println("Set channel SUN_INTENSITY value to: " + sunIntensity);
-        } catch (IOException | OpenemsError.OpenemsNamedException e) {
-            e.printStackTrace();
         }
     }
 
