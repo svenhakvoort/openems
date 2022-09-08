@@ -62,9 +62,6 @@ services:
       - /dev:/dev
   ui:
     network_mode: host
-    depends_on:
-      - backend
-      - edge
     build:
       context: .
       dockerfile: UiRpi.Dockerfile
