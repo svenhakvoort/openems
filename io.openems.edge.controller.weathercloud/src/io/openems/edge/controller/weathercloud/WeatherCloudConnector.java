@@ -27,7 +27,7 @@ import java.io.IOException;
         EdgeEventConstants.TOPIC_CYCLE_BEFORE_PROCESS_IMAGE,
         EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE
 })
-public class WeatherCloudConnector extends AbstractOpenemsComponent implements EventHandler {
+public class WeatherCloudConnector extends AbstractOpenemsComponent implements OpenemsComponent, EventHandler {
 
     private static final String WEATHER_CLOUD_BASE_URL = "https://app.weathercloud.net";
 
@@ -65,27 +65,6 @@ public class WeatherCloudConnector extends AbstractOpenemsComponent implements E
             case EdgeEventConstants.TOPIC_CYCLE_AFTER_PROCESS_IMAGE:
                 this.querySunIntensity();
                 break;
-        }
-    }
-
-    public static void main(String[] args) {
-        var client = new OkHttpClient();
-        var request = new Request.Builder()
-                .url(WEATHER_CLOUD_BASE_URL + "/device/values?code=" + "0096876745")
-                .header("X-Requested-With", "XMLHttpRequest")
-                .build();
-        try (var response = client.newCall(request).execute()) {
-
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
-            }
-
-            String stringResponse = response.body().string();
-            var parsedResponse = JsonUtils.parseToJsonObject(stringResponse);
-            var sunIntensity = parsedResponse.get("solarrad").getAsFloat();
-            System.out.println(sunIntensity);
-        } catch (IOException | OpenemsError.OpenemsNamedException e) {
-            e.printStackTrace();
         }
     }
 
