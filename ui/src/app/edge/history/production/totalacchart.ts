@@ -15,6 +15,7 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
 
     @Input() public period: DefaultTypes.HistoryPeriod;
     @Input() public showPhases: boolean;
+    @Input() public showSunIntensity: boolean;
 
     ngOnChanges() {
         this.updateChart();
@@ -76,6 +77,16 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
                                         backgroundColor: 'rgba(45,143,171,0.05)',
                                         borderColor: 'rgba(45,143,171,1)'
                                     });
+                                }
+                                if (channelAddress.channelId == "SunIntensity" && this.showSunIntensity == true) {
+                                  datasets.push({
+                                    label: this.translate.instant('General.sunIntensity'),
+                                    data: data
+                                  });
+                                  this.colors.push({
+                                    backgroundColor: 'rgba(253,197,7,0.05)',
+                                    borderColor: 'rgba(253,197,7,1)',
+                                  });
                                 }
                                 if ('_sum/ProductionAcActivePowerL1' && '_sum/ProductionAcActivePowerL2' && '_sum/ProductionAcActivePowerL3' in result.data && this.showPhases == true) {
                                     if (channelAddress.channelId == 'ProductionAcActivePowerL1') {

@@ -68,10 +68,17 @@ export class ProductionTotalChartComponent extends AbstractHistoryChart implemen
                             effectiveProductionL3[index] = Utils.addSafely(result.data['_sum/ProductionAcActivePowerL3']?.[index], value / 3);
                         });
                     } else {
-                        effectiveProductionL1 = result.data['_sum/ProductionAcActivePowerL1'];
-                        effectiveProductionL2 = result.data['_sum/ProductionAcActivePowerL2'];
-                        effectiveProductionL3 = result.data['_sum/ProductionAcActivePowerL3'];
+                        if (result.data['_sum/ProductionAcActivePowerL1']) {
+                          effectiveProductionL1 = result.data['_sum/ProductionAcActivePowerL1'];
+                        }
+                        if (result.data['_sum/ProductionAcActivePowerL2']) {
+                          effectiveProductionL1 = result.data['_sum/ProductionAcActivePowerL2'];
+                        }
+                        if (result.data['_sum/ProductionAcActivePowerL3']) {
+                          effectiveProductionL1 = result.data['_sum/ProductionAcActivePowerL3'];
+                        }
                     }
+
 
                     let totalProductionDataL1 = effectiveProductionL1.map(value => {
                         if (value == null) {
