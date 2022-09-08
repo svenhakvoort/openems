@@ -47,11 +47,11 @@ export class ChartOptionsComponent {
                 this.setShowTotal.emit(false);
             }
 
-          if (data['role'] == "SunIntensity" && data['data'] == true) {
-            this.setShowTotal.emit(true);
-          } else if (data['role'] == "SunIntensity" && data['data'] == false) {
-            this.setShowTotal.emit(false);
-          }
+            if (data['role'] == "SunIntensity" && data['data'] == true) {
+              this.setShowTotal.emit(true);
+            } else if (data['role'] == "SunIntensity" && data['data'] == false) {
+              this.setShowTotal.emit(false);
+            }
         });
         await popover.present();
     }
