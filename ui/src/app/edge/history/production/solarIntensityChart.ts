@@ -8,13 +8,12 @@ import {AbstractHistoryChart} from '../abstracthistorychart';
 import {Data, TooltipItem} from '../shared';
 
 @Component({
-  selector: 'productionTotalAcChart',
+  selector: 'solarIntensityChart',
   templateUrl: '../abstracthistorychart.html'
 })
-export class ProductionTotalAcChartComponent extends AbstractHistoryChart implements OnInit, OnChanges {
+export class SolarIntensityChart extends AbstractHistoryChart implements OnInit, OnChanges {
 
   @Input() public period: DefaultTypes.HistoryPeriod;
-  @Input() public showPhases: boolean;
 
   ngOnChanges() {
     this.updateChart();
@@ -25,7 +24,7 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
     protected translate: TranslateService,
     private route: ActivatedRoute,
   ) {
-    super("production-total-ac-chart", service, translate);
+    super("solar-intensity-chart", service, translate);
   }
 
   ngOnInit() {
@@ -62,48 +61,20 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
                 return
               }
 
-              let data = result.data[channelAddress.toString()].map(value => {
-                if (value == null) {
-                  return null
-                } else {
-                  return value / 1000; // convert to kW
-                }
-              });
+              let data = result.data[channelAddress.toString()];
+
               if (!data) {
                 return;
               } else {
-                if (channelAddress.channelId == 'ProductionAcActivePower') {
+                if (channelAddress.channelId == "SunIntensity") {
                   datasets.push({
-                    label: this.translate.instant('General.production'),
+                    label: this.translate.instant('General.sunIntensity'),
                     data: data
                   });
                   this.colors.push({
-                    backgroundColor: 'rgba(45,143,171,0.05)',
-                    borderColor: 'rgba(45,143,171,1)'
+                    backgroundColor: 'rgba(253,197,7,0.05)',
+                    borderColor: 'rgba(253,197,7,1)',
                   });
-                }
-                if ('_sum/ProductionAcActivePowerL1' && '_sum/ProductionAcActivePowerL2' && '_sum/ProductionAcActivePowerL3' in result.data && this.showPhases == true) {
-                  if (channelAddress.channelId == 'ProductionAcActivePowerL1') {
-                    datasets.push({
-                      label: this.translate.instant('General.phase') + ' ' + 'L1',
-                      data: data
-                    });
-                    this.colors.push(this.phase1Color);
-                  }
-                  if (channelAddress.channelId == 'ProductionAcActivePowerL2') {
-                    datasets.push({
-                      label: this.translate.instant('General.phase') + ' ' + 'L2',
-                      data: data
-                    });
-                    this.colors.push(this.phase2Color);
-                  }
-                  if (channelAddress.channelId == 'ProductionAcActivePowerL3') {
-                    datasets.push({
-                      label: this.translate.instant('General.phase') + ' ' + 'L3',
-                      data: data
-                    });
-                    this.colors.push(this.phase3Color);
-                  }
                 }
               }
             });
@@ -135,11 +106,7 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
 
     return new Promise((resolve) => {
       let result: ChannelAddress[] = [
-        new ChannelAddress('_sum', 'ProductionActivePower'),
-        new ChannelAddress('_sum', 'ProductionAcActivePower'),
-        new ChannelAddress('_sum', 'ProductionAcActivePowerL1'),
-        new ChannelAddress('_sum', 'ProductionAcActivePowerL2'),
-        new ChannelAddress('_sum', 'ProductionAcActivePowerL3')
+        new ChannelAddress('_weather', 'SunIntensity')
       ];
       resolve(result);
     })
@@ -147,11 +114,11 @@ export class ProductionTotalAcChartComponent extends AbstractHistoryChart implem
 
   protected setLabel() {
     let options = this.createDefaultChartOptions();
-    options.scales.yAxes[0].scaleLabel.labelString = "kW";
+    options.scales.yAxes[0].scaleLabel.labelString = "W/m2";
     options.tooltips.callbacks.label = function (tooltipItem: TooltipItem, data: Data) {
       let label = data.datasets[tooltipItem.datasetIndex].label;
       let value = tooltipItem.yLabel;
-      return label + ": " + formatNumber(value, 'de', '1.0-2') + " kW";
+      return label + ": " + formatNumber(value, 'de', '1.0-2') + " W/m2a";
     }
     this.options = options;
   }
