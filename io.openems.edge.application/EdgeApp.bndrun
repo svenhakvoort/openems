@@ -78,7 +78,6 @@
 	bnd.identity;id='io.openems.edge.controller.ess.standby',\
 	bnd.identity;id='io.openems.edge.controller.ess.timeofusetariff.discharge',\
 	bnd.identity;id='io.openems.edge.controller.evcs',\
-    bnd.identity;id='io.openems.edge.controller.weathercloud',\
 	bnd.identity;id='io.openems.edge.controller.evcs.fixactivepower',\
 	bnd.identity;id='io.openems.edge.controller.generic.jsonlogic',\
 	bnd.identity;id='io.openems.edge.controller.highloadtimeslot',\
@@ -237,7 +236,6 @@
 	io.openems.edge.controller.pvinverter.fixpowerlimit;version=snapshot,\
 	io.openems.edge.controller.pvinverter.selltogridlimit;version=snapshot,\
 	io.openems.edge.controller.symmetric.balancing;version=snapshot,\
-	io.openems.edge.controller.weathercloud,\
 	io.openems.edge.controller.symmetric.balancingschedule;version=snapshot,\
 	io.openems.edge.controller.symmetric.fixreactivepower;version=snapshot,\
 	io.openems.edge.controller.symmetric.limitactivepower;version=snapshot,\

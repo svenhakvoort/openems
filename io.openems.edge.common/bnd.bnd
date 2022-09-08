@@ -5,7 +5,8 @@ Bundle-Version: 1.0.0.${tstamp}
 
 -buildpath: \
 	${buildpath},\
-	io.openems.common
+	io.openems.common,\
+    io.openems.wrapper.okhttp
 
 -testpath: \
 	${testpath}
