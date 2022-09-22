@@ -1,6 +1,11 @@
 services:
   chronograf:
     network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     image: chronograf:1.9.4
     ports:
       - '8888:8888'
@@ -15,6 +20,11 @@ services:
       - INFLUXDB_TOKEN=openems
   influxdb:
     network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     image: influxdb:2.4.0
     container_name: influxdb
     ports:
@@ -34,6 +44,11 @@ services:
       - influxConfig:/etc/influxdb2
   postgres:
     image: postgres:10.0
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     network_mode: host
     environment:
       POSTGRES_USER: openems
@@ -45,6 +60,11 @@ services:
       - pgdata:/var/lib/postgresql/data
   edge:
     network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     depends_on:
       - backend
     device_cgroup_rules:
@@ -62,6 +82,11 @@ services:
       - /dev:/dev
   ui:
     network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     build:
       context: .
       dockerfile: UiRpi.Dockerfile
@@ -69,6 +94,11 @@ services:
       - 4200:4200
   backend:
     network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     depends_on:
       odoo:
         condition: service_healthy
@@ -85,6 +115,11 @@ services:
       - backendData:/app/tools/docker/openems-backend/config.d
   odoo:
     network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     depends_on:
       - postgres
     healthcheck:
